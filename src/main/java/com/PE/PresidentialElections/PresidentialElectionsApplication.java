@@ -10,5 +10,4 @@ public class PresidentialElectionsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PresidentialElectionsApplication.class, args);
 	}
-
 }
