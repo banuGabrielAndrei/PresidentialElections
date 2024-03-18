@@ -38,7 +38,7 @@ public class AuthController {
             Model model) {
         try {
             userService.saveUser(userDto);
-            return "loginPage";
+            return "/";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Email")) {
                 result.rejectValue("email", "error", e.getMessage());
