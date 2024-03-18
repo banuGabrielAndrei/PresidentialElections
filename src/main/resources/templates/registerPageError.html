@@ -15,7 +15,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <ul class="navbar-nav flex-grow-1 justify-content-end">
-                <li class="nav-item"> <span id="registerText">Already registered?</span> <a class="nav-link" th:href="@{/}">Login</a></li>
+                <li class="nav-item"> <span id="registerText">Already registered?</span> <a class="nav-link" th:href="@{/loginPage}">Login</a></li>
             </ul>
         </div>
     </nav>
@@ -26,10 +26,7 @@
                     <img th:src="@{/images/background.jpeg}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Welcome to register form</h5>
-                        <div th:if="${param.error}">
-                            <div class="alert alert-danger">Invalid Username and Password!</div>
-                        </div>
-                        <form id="loginForm" method="post" role="form" th:action="@{/register/save}" th:object="${user}">
+                        <form id="loginForm" method="post" role="form" th:object="${user}">
                             <div class="mb-3">
                                 <label for="firstName" class="form-label">First name</label>
                                 <input type="text" class="form-control" id="firstName" placeholder="First name" th:field="*{firstName}" required>
@@ -42,21 +39,21 @@
                             
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Email address" th:field="*{email}" required>
+                                <input type="email" class="form-control" id="email" placeholder="Email address" autocomplete="on" th:field="*{email}" required>
                                 <p th:if="${#fields.hasErrors('email')}" class="text-danger">Email already exists.</p>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" placeholder="Username" minlength="5" th:field="*{username}" required>
-                                <p th:if="${#fields.hasErrors('username')}" class="text-danger">Username already exists.</p>
+                                <p th:if="${#fields.hasErrors('username')}" class="text-danger">Username already exists!</p>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="loginPassword" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="loginPassword" placeholder="Password" th:field="*{password}" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <a th:href="@{/registerPage}" class="btn btn-primary">Back to Register</a>
                         </form>
                     </div>
                 </div>

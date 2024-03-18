@@ -2,6 +2,7 @@ package com.PE.PresidentialElections.models;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +49,5 @@ public class UserEntity {
     @JoinTable(name = "users_roles", joinColumns = {
             @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
                     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID") })
-
     private List<Role> roles = new ArrayList<>();
 }
