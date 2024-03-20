@@ -40,10 +40,26 @@ public class UserServiceImp implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUsername(userDto.getUsername());
+
+        // implementation for users single role
         Role role = roleRepo.findByName("ROLE_USER");
         if (role == null) {
-            role = checkRoleExist();
+            role = createRole("ROLE_USER");
         }
+
+        // implementation for users with both ADMIN and USER role
+
+        // Role adminRole = roleRepo.findByName("ROLE_ADMIN");
+        // if (adminRole == null) {
+        // adminRole = createRole("ROLE_ADMIN");
+        // }
+
+        // Role userRole = roleRepo.findByName("ROLE_USER");
+        // if (userRole == null) {
+        // userRole = createRole("ROLE_USER");
+        // }
+        // user.setRoles(Arrays.asList(adminRole, userRole));
+
         user.setRoles(Arrays.asList(role));
         userRepo.save(user);
     }
@@ -72,9 +88,9 @@ public class UserServiceImp implements UserService {
         return userDto;
     }
 
-    private Role checkRoleExist() {
+    private Role createRole(String roleName) {
         Role role = new Role();
-        role.setName("ROLE_USER");
+        role.setName(roleName);
         return roleRepo.save(role);
     }
 }

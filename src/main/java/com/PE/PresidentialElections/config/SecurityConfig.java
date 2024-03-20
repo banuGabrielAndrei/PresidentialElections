@@ -15,36 +15,37 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-        @Autowired
-        private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-        @Bean
-        static PasswordEncoder passwordEncoder() {
-                return new BCryptPasswordEncoder();
-        }
+	@Bean
+	static PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-        @Bean
-        SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http.csrf(c -> c.disable())
-                                .authorizeHttpRequests(request -> request
-                                                .requestMatchers("/styles/**", "/images/**").permitAll()
-                                                .requestMatchers("/", "/registerPage",
-                                                                "/registerPageError", "/register/save",
-                                                                "/login")
-                                                .permitAll()
-                                                .requestMatchers("/PresidentialElections").authenticated()
-                                                .anyRequest().authenticated())
-                                .formLogin(form -> form.loginPage("/").permitAll()
-                                                .loginProcessingUrl("/login")
-                                                .defaultSuccessUrl("/PresidentialElections"))
-                                .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
-                return http.build();
-        }
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.csrf(c -> c.disable())
+				.authorizeHttpRequests(request -> request
+						.requestMatchers("/styles/**", "/images/**").permitAll()
+						.requestMatchers("/", "/registerPage",
+								"/registerPageError", "/register/save",
+								"/login", "/loginPage", "startApp")
+						.permitAll()
+						.requestMatchers("/PresidentialElections").authenticated()
+						.anyRequest().authenticated())
+				.formLogin(form -> form.loginPage("/").permitAll()
+						.loginProcessingUrl("/login")
+						.defaultSuccessUrl("/PresidentialElections")
+						.failureUrl("/loginPage?error=true"))
+				.logout(logout -> logout.logoutSuccessUrl("/").permitAll());
+		return http.build();
+	}
 
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-                auth
-                                .userDetailsService(userDetailsService)
-                                .passwordEncoder(passwordEncoder());
-        }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder());
+	}
 }

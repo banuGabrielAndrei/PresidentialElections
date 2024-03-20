@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 
 @Controller
 public class AuthController {
-
     private UserService userService;
 
     public AuthController(UserService userService) {
@@ -21,8 +20,8 @@ public class AuthController {
     }
 
     @GetMapping("/")
-    public String loginForm() {
-        return "loginPage";
+    public String startPage() {
+        return "startApp";
     }
 
     @GetMapping("/registerPage")
@@ -32,13 +31,14 @@ public class AuthController {
         return "registerPage";
     }
 
+    @SuppressWarnings("null")
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
             BindingResult result,
             Model model) {
         try {
             userService.saveUser(userDto);
-            return "/";
+            return "redirect:/loginPage";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Email")) {
                 result.rejectValue("email", "error", e.getMessage());
@@ -58,5 +58,10 @@ public class AuthController {
     @GetMapping("/registerPageError")
     public String errorRegistering() {
         return "registerPageError";
+    }
+
+    @GetMapping("/loginPage")
+    public String loginPage() {
+        return "loginPage";
     }
 }
