@@ -66,7 +66,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserEntity findByEmail(String email) {
-        return userRepo.findByUsername(email);
+        return userRepo.findByEmail(email);
     }
 
     @Override
