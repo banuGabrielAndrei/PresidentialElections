@@ -29,7 +29,7 @@
                             <img th:src="@{/images/elections des personnels.png}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <div th:if="${param.error}">
-                                    <div class="alert alert-danger">Invalid Username and Password!</div>
+                                    <div class="alert alert-danger">Invalid Username or Password!</div>
                                 </div>
                                 <form method="post" th:action="@{/login}" class="needs-validation">
                                     <div class="mb-3">
