@@ -9,6 +9,8 @@ public interface UserService {
 
     void saveUser(UserDto userDto);
 
+    void addDescription(String username, String description);
+
     UserEntity findByEmail(String email);
 
     UserEntity findByUsername(String username);

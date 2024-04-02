@@ -1,6 +1,5 @@
 package com.PE.PresidentialElections.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,21 +7,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.PE.PresidentialElections.dataTransfer.UserDto;
-import com.PE.PresidentialElections.models.Role;
 import com.PE.PresidentialElections.models.UserEntity;
-import com.PE.PresidentialElections.repository.RoleRepository;
 import com.PE.PresidentialElections.repository.UserRepository;
 
 @Service
 public class UserServiceImp implements UserService {
     private UserRepository userRepo;
-    private RoleRepository roleRepo;
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImp(UserRepository userRepository, RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder) {
+    public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepository;
-        this.roleRepo = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -40,27 +34,14 @@ public class UserServiceImp implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUsername(userDto.getUsername());
+        user.setRole("ROLE_USER");
+        userRepo.save(user);
+    }
 
-        // implementation for users single role
-        Role role = roleRepo.findByName("ROLE_USER");
-        if (role == null) {
-            role = createRole("ROLE_USER");
-        }
-
-        // implementation for users with both ADMIN and USER role
-
-        // Role adminRole = roleRepo.findByName("ROLE_ADMIN");
-        // if (adminRole == null) {
-        // adminRole = createRole("ROLE_ADMIN");
-        // }
-
-        // Role userRole = roleRepo.findByName("ROLE_USER");
-        // if (userRole == null) {
-        // userRole = createRole("ROLE_USER");
-        // }
-        // user.setRoles(Arrays.asList(adminRole, userRole));
-
-        user.setRoles(Arrays.asList(role));
+    @Override
+    public void addDescription(String username, String description) {
+        UserEntity user = userRepo.findByUsername(username);
+        user.setDescription(description);
         userRepo.save(user);
     }
 
@@ -85,12 +66,7 @@ public class UserServiceImp implements UserService {
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
         return userDto;
-    }
-
-    private Role createRole(String roleName) {
-        Role role = new Role();
-        role.setName(roleName);
-        return roleRepo.save(role);
     }
 }

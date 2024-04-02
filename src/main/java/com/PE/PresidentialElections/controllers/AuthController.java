@@ -40,7 +40,7 @@ public class AuthController {
             userService.saveUser(userDto);
             return "redirect:/loginPage";
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("Email")) {
+            if (e.getMessage().contains("email")) {
                 result.rejectValue("email", "error", e.getMessage());
             } else if (e.getMessage().contains("Username")) {
                 result.rejectValue("username", "error", e.getMessage());
