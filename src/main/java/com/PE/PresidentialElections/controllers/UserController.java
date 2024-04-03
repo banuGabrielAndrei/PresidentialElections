@@ -1,21 +1,26 @@
 package com.PE.PresidentialElections.controllers;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.PE.PresidentialElections.dataTransfer.UserDto;
+import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.service.UserService;
 
 import jakarta.validation.Valid;
 
 @Controller
-public class AuthController {
+public class UserController {
     private UserService userService;
 
-    public AuthController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -31,7 +36,6 @@ public class AuthController {
         return "registerPage";
     }
 
-    @SuppressWarnings("null")
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
             BindingResult result,
@@ -63,5 +67,21 @@ public class AuthController {
     @GetMapping("/loginPage")
     public String loginPage() {
         return "loginPage";
+    }
+
+    @GetMapping("/user/profile")
+    public String profile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        UserEntity user = userService.findByUsername(username);
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @PostMapping("/updateUserDescription")
+    public String saveDescription(@RequestParam("description") String description, Authentication authentication) {
+        String username = authentication.getName();
+        userService.addDescription(username, description);
+        return "redirect:/user/profile";
     }
 }

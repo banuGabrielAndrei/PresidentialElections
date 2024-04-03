@@ -32,7 +32,8 @@ public class SecurityConfig {
 								"/registerPageError", "/register/save",
 								"/login", "/loginPage", "startApp")
 						.permitAll()
-						.requestMatchers("/PresidentialElections", "/profile", "/saveDescription").authenticated()
+						.requestMatchers("/PresidentialElections", "/user/profile", "/updateUserDescription")
+						.authenticated()
 						.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").permitAll()
 						.loginProcessingUrl("/login")
