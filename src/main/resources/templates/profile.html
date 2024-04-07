@@ -57,7 +57,8 @@
                   <div style="min-height: 120px;">
                     <div class="collapse collapse-horizontal" id="collapseWidthExample">
                       <div class="card card-body" style="width: 300px;">
-                        <form method="post" th:action="@{/updateUserDescription}">
+                        <form method="post" th:action="@{/user/description}">
+                          <input type="hidden" name="username" th:value="${#authentication.principal.username}" />
                           <div class="form-floating">
                               <textarea class="form-control" placeholder="Leave a comment here" id="description" name="description"></textarea>
                               <label for="description">Description</label>

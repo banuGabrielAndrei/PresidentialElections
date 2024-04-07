@@ -1,12 +1,11 @@
 package com.PE.PresidentialElections.controllers;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -69,19 +68,17 @@ public class UserController {
         return "loginPage";
     }
 
-    @GetMapping("/user/profile")
-    public String profile(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+    @GetMapping("/user/{username}/profile")
+    public String profile(Model model, @PathVariable("username") String username) {
         UserEntity user = userService.findByUsername(username);
         model.addAttribute("user", user);
         return "profile";
     }
 
-    @PostMapping("/updateUserDescription")
-    public String saveDescription(@RequestParam("description") String description, Authentication authentication) {
-        String username = authentication.getName();
+    @PostMapping("/user/description")
+    public String saveDescription(@RequestParam("description") String description,
+            @RequestParam("username") String username) {
         userService.addDescription(username, description);
-        return "redirect:/user/profile";
+        return "redirect:/user/" + username + "/profile";
     }
 }
