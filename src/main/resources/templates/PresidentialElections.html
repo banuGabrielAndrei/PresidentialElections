@@ -21,6 +21,39 @@
         </ul>
     </div>
 </nav>
+<div class="container mt-5">
+    <div class="row justify-content-start">
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3" id="submitCard">
+                <div class="card-header" id="remainingTime"></div>
+                <div class="card-body">
+                    <h6 class="card-title">Please submit before elections are starting</h6>
+                </div>
+                <a href="#" class="btn btn-success" id="submitCandidate">SUBMIT</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">Candidates</div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        
+                    </table>
+                </div>
+            </div>  
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <img th:src="@{/images/ranking.jpg}" class="card-img-top" alt="">
+                <div class="card-body">
+                  <h5 class="card-title">RANKING</h5>
+                  
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/JS/presidentialElections.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
