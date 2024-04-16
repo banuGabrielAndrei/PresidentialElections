@@ -42,4 +42,7 @@ public class UserEntity {
 
         @Column
         private String description;
+
+        @Column(nullable = false)
+        private Boolean hasVoted = false;
 }

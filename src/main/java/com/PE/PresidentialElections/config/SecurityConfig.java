@@ -30,7 +30,8 @@ public class SecurityConfig {
 						.requestMatchers("/styles/**", "/images/**", "/JS/**").permitAll()
 						.requestMatchers("/", "/registerPage",
 								"/registerPageError", "/register/save",
-								"/login", "/loginPage", "startApp")
+								"/login", "/loginPage", "/candidacy", "/candidate/save", "startApp",
+								"PresidentialElections/candidates")
 						.permitAll()
 						.requestMatchers("/PresidentialElections", "/user/profile", "/updateUserDescription")
 						.authenticated()

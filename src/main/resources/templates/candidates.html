@@ -15,6 +15,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <ul class="navbar-nav flex-grow-1 justify-content-end">
+            <li class="nav-item"><a class="nav-link" th:href="@{/PresidentialElections}">@PE</a></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/user/{username}/profile(username=${#authentication.principal.username})}">Profile</a></li>
             <li class="nav-item"><span class="nav-link" th:text="'Hello, ' + ${#authentication.principal.username}"></span></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/}">Logout</a></li>
@@ -24,24 +25,30 @@
 <div class="container mt-5">
     <div class="row justify-content-start">
         <div class="col-md-4">
-            <div class="card text-white bg-secondary mb-3" id="submitCard">
-                <div class="card-header" id="remainingTime"></div>
+            <div class="card text-white bg-secondary mb-3" id="candidatesCard">
+                <div class="card-header">CANDIDATES</div>
+                <h6 class="card-title" id="countDown"></h6>
                 <div class="card-body">
-                    <h6 class="card-title">Put forward candidacy before elections are starting</h6>
-                    <a class="btn btn-success" id="submitCandidate" th:href="@{/candidacy}">CANDIDATE</a>
-                    <a class="btn btn-warning" th:href="@{/PresidentialElections/candidates}">GO TO CANDIDATES LIST</a>
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Vote me!</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each = "candidate : ${candidates}">
+                                <td th:text = "${candidate.firstName}"></td>
+                                <td th:text = "${candidate.lastName}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm">Vote</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-white bg-success mb-3" style="max-width: 18rem;" id="ranking">
-                <img th:src="@{/images/ranking.jpg}" class="card-img-top" alt="">
-                <div class="card-body">
-                  <h5 class="card-title">RANKING</h5>
-                  <a class="btn btn-danger" >GO TO ELECTIONS RESULT</a>
-                  
-                </div>
-              </div>
+            </div>  
         </div>
     </div>
 </div>
