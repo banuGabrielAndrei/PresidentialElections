@@ -1,7 +1,7 @@
 let intervalId;
 
 function countdownElections() {
-    let startElections = new Date("Apr 22, 2024 01:43:00").getTime();
+    let startElections = new Date("Apr 21, 2024 15:30:00").getTime();
     let today = new Date().getTime();
     let remainingTime = startElections - today;
     let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
@@ -14,6 +14,10 @@ function countdownElections() {
         button.disabled = true;
     }
     if (remainingTime <= 0) {
+        document.getElementById("countDown").innerHTML = "ELECTIONS STARTED!"
+        for (let button of voteButtons) {
+            button.disabled = false;
+        }
         clearInterval(intervalId);
     }   
 }
