@@ -36,7 +36,7 @@ public class CandidateController {
     public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
         try {
             candidatesService.saveCandidate(candidateDto);
-            return "redirect:candidates";
+            return "redirect:/PresidentialElections/candidates";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "candidacy";
