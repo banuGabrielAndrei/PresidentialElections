@@ -3,6 +3,7 @@ package com.PE.PresidentialElections.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,9 @@ import com.PE.PresidentialElections.repository.CandidatesRepository;
 
 @Service
 public class CandidatesServiceImp implements CandidatesService {
-    private CandidatesRepository candidatesRepository;
 
-    public CandidatesServiceImp(CandidatesRepository candidatesRepository) {
-        this.candidatesRepository = candidatesRepository;
-    }
+    @Autowired
+    private CandidatesRepository candidatesRepository;
 
     private CandidateDto mapCandidateDto(Candidate candidate) {
         var candidateDto = new CandidateDto();

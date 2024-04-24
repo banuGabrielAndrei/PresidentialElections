@@ -15,7 +15,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <ul class="navbar-nav flex-grow-1 justify-content-end">
-            <li class="nav-item"><a class="nav-link" th:href="@{/PresidentialElections}">@PE</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/Presidential-Elections}">@PE</a></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/user/{username}/profile(username=${#authentication.principal.username})}">Profile</a></li>
             <li class="nav-item"><span class="nav-link" th:text="'Hello, ' + ${#authentication.principal.username}"></span></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/}">Logout</a></li>
@@ -29,6 +29,9 @@
                 <div class="card-header">CANDIDATES</div>
                 <h6 class="card-title" id="countDown"></h6>
                 <div class="card-body">
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
                     <table class="table table-bordered table-hover">
                         <thead class="table-dark">
                             <tr>

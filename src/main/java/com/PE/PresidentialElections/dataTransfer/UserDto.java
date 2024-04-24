@@ -24,4 +24,6 @@ public class UserDto {
     private String password;
     @NotEmpty
     private String role;
+
+    private Boolean hasVoted;
 }

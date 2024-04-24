@@ -25,14 +25,14 @@ public class UserController {
 
     @GetMapping("/")
     public String startPage() {
-        return "startApp";
+        return "start-app";
     }
 
-    @GetMapping("/registerPage")
+    @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         UserDto user = new UserDto();
         model.addAttribute("user", user);
-        return "registerPage";
+        return "register";
     }
 
     @PostMapping("/register/save")
@@ -41,7 +41,7 @@ public class UserController {
             Model model) {
         try {
             userService.saveUser(userDto);
-            return "redirect:/loginPage";
+            return "redirect:/login-page";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("email")) {
                 result.rejectValue("email", "error", e.getMessage());
@@ -49,23 +49,23 @@ public class UserController {
                 result.rejectValue("username", "error", e.getMessage());
             }
             model.addAttribute("user", userDto);
-            return "registerPageError";
+            return "register-error";
         }
     }
 
-    @GetMapping("/PresidentialElections")
+    @GetMapping("/Presidential-Elections")
     public String appPage() {
-        return "PresidentialElections";
+        return "Presidential-Elections";
     }
 
-    @GetMapping("/registerPageError")
+    @GetMapping("/register-error")
     public String errorRegistering() {
-        return "registerPageError";
+        return "register-error";
     }
 
-    @GetMapping("/loginPage")
+    @GetMapping("/login-page")
     public String loginPage() {
-        return "loginPage";
+        return "login-page";
     }
 
     @GetMapping("/user/{username}/profile")

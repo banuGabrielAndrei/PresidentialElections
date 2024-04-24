@@ -3,6 +3,7 @@ package com.PE.PresidentialElections.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,12 @@ import com.PE.PresidentialElections.repository.UserRepository;
 
 @Service
 public class UserServiceImp implements UserService {
-    private UserRepository userRepo;
-    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UserRepository userRepo;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void saveUser(UserDto userDto) {

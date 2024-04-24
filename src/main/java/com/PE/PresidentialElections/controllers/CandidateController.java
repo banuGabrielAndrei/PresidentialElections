@@ -25,7 +25,7 @@ public class CandidateController {
         return "candidacy";
     }
 
-    @GetMapping("PresidentialElections/candidates")
+    @GetMapping("Presidential-Elections/candidates")
     public String candidatesList(Model model) {
         List<CandidateDto> candidates = candidatesService.findAllCandidates();
         model.addAttribute("candidates", candidates);
@@ -36,7 +36,7 @@ public class CandidateController {
     public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
         try {
             candidatesService.saveCandidate(candidateDto);
-            return "redirect:/PresidentialElections/candidates";
+            return "redirect:/Presidential-Elections/candidates";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "candidacy";

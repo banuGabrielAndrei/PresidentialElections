@@ -28,18 +28,18 @@ public class SecurityConfig {
 		http.csrf(c -> c.disable())
 				.authorizeHttpRequests(request -> request
 						.requestMatchers("/styles/**", "/images/**", "/JS/**").permitAll()
-						.requestMatchers("/", "/registerPage",
-								"/registerPageError", "/register/save",
-								"/login", "/loginPage", "/candidacy", "/candidate/save", "startApp",
-								"PresidentialElections/candidates", "/candidates")
+						.requestMatchers("/", "/register",
+								"/register-error", "/register/save",
+								"/login", "/login-page", "/candidacy", "/candidate/save", "start-app",
+								"Presidential-Elections/candidates", "/candidates")
 						.permitAll()
-						.requestMatchers("/PresidentialElections", "/user/profile", "/updateUserDescription")
+						.requestMatchers("/Presidential-Elections", "/user/profile", "/updateUserDescription")
 						.authenticated()
 						.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").permitAll()
 						.loginProcessingUrl("/login")
-						.defaultSuccessUrl("/PresidentialElections")
-						.failureUrl("/loginPage?error=true"))
+						.defaultSuccessUrl("/Presidential-Elections")
+						.failureUrl("/login-page?error=true"))
 				.logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 		return http.build();
 	}
