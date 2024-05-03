@@ -1,7 +1,7 @@
 let intervalId;
 
 function countdownElections() {
-    let startElections = new Date("Apr 26, 2024 20:30:00").getTime();
+    let startElections = new Date("May 26, 2024 20:30:00").getTime();
     let today = new Date().getTime();
     let remainingTime = startElections - today;
     let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));

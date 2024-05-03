@@ -1,13 +1,14 @@
 package com.PE.PresidentialElections.service;
 
+import java.util.Optional;
+
 import com.PE.PresidentialElections.models.Dates;
 
 public interface DatesService {
 
     void saveDates(Dates date);
 
-    void editDates(Dates date);
+    Optional<Dates> getDateById(Integer id);
 
-    Dates findByUsage(String usage);
-
+    boolean isValidVotingDate(Dates date);
 }

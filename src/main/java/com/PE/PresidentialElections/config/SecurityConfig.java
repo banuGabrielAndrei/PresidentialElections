@@ -35,6 +35,8 @@ public class SecurityConfig {
 						.permitAll()
 						.requestMatchers("/Presidential-Elections", "/user/profile", "/updateUserDescription")
 						.authenticated()
+						.requestMatchers("Presidential-Elections/set-deadline-dates", "/save/dates")
+						.hasAnyAuthority("ROLE_ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").permitAll()
 						.loginProcessingUrl("/login")

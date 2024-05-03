@@ -1,7 +1,7 @@
 let intervalId;
 
 function remainingTime() {
-    let deadline = new Date("Apr 25, 2024 20:30:00").getTime();
+    let deadline = new Date("May 25, 2024 20:30:00").getTime();
     let today = new Date().getTime();
     let remainingTime = deadline - today;
     let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));

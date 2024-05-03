@@ -25,7 +25,7 @@ public class CandidateController {
         return "candidacy";
     }
 
-    @GetMapping("Presidential-Elections/candidates")
+    @GetMapping("/Presidential-Elections/candidates")
     public String candidatesList(Model model) {
         List<CandidateDto> candidates = candidatesService.findAllCandidates();
         model.addAttribute("candidates", candidates);
