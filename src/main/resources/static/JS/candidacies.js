@@ -1,8 +1,10 @@
 let intervalId;
 
 function remainingTime() {
-    let deadline = new Date("May 25, 2024 20:30:00").getTime();
+    let candidacyDeadlineElement = document.getElementById("candidacyDeadline");
+    let candidacyDeadline = candidacyDeadlineElement.textContent;
     let today = new Date().getTime();
+    let deadline = Date.parse(candidacyDeadline);
     let remainingTime = deadline - today;
     let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
     let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

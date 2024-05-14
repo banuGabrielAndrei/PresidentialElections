@@ -1,12 +1,18 @@
 package com.PE.PresidentialElections.controllers;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.PE.PresidentialElections.dataTransfer.CandidateDto;
+import com.PE.PresidentialElections.models.Dates;
 import com.PE.PresidentialElections.service.CandidatesService;
+import com.PE.PresidentialElections.service.DatesService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CandidateController {
     private CandidatesService candidatesService;
+    private DatesService datesService;
 
-    public CandidateController(CandidatesService candidatesService) {
+    public CandidateController(CandidatesService candidatesService, DatesService datesService) {
         this.candidatesService = candidatesService;
+        this.datesService = datesService;
     }
 
     @GetMapping("/candidacy")
@@ -35,8 +43,19 @@ public class CandidateController {
     @PostMapping("/candidate/save")
     public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
         try {
-            candidatesService.saveCandidate(candidateDto);
-            return "redirect:/Presidential-Elections/candidates";
+            Optional<Dates> dbDate = datesService.getDateById(1);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime candidacyDeadLine = dbDate.get().getCandidacyDeadline().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            if (now.isBefore(candidacyDeadLine)) {
+                candidatesService.saveCandidate(candidateDto);
+                return "redirect:/Presidential-Elections/candidates";
+            } else {
+                model.addAttribute("candidacyEnds", "You cannot candidate anymore! Elections are already started!");
+                return "candidacy";
+            }
+
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "candidacy";

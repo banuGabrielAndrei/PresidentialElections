@@ -28,6 +28,7 @@
     <div class="row justify-content-start">
         <div class="col-md-4">
             <div class="card text-white bg-secondary mb-3" id="submitCard">
+                <div id="candidacyDeadline" th:text="${#temporals.formatISO(endCandidacy)}" style="display: none;"></div>
                 <div class="card-header" id="remainingTime"></div>
                 <div class="card-body">
                     <h6 class="card-title">Put forward candidacy before elections are starting</h6>

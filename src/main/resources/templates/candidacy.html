@@ -32,6 +32,9 @@
                     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                         <span th:text="${errorMessage}"></span>
                     </div>
+                    <div th:if="${candidacyEnds}" class="alert alert-danger" role="alert">
+                        <span th:text="${candidacyEnds}"></span>
+                    </div>
                     <form id="loginForm" method="post" role="form" th:action="@{/candidate/save}" th:object="${candidate}">
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First name</label>
