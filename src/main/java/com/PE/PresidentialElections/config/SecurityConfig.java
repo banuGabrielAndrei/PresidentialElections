@@ -33,7 +33,8 @@ public class SecurityConfig {
 								"/login", "/login-page", "/candidacy", "/candidate/save", "start-app",
 								"Presidential-Elections/candidates", "/candidates")
 						.permitAll()
-						.requestMatchers("/Presidential-Elections", "/user/profile", "/updateUserDescription")
+						.requestMatchers("/Presidential-Elections", "/user/profile", "/updateUserDescription",
+								"/candidate/vote")
 						.authenticated()
 						.requestMatchers("Presidential-Elections/set-deadline-dates", "/save/dates")
 						.hasAnyAuthority("ROLE_ADMIN")

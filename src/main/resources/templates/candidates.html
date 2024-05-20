@@ -27,7 +27,10 @@
         <div class="col-md-4">
             <div class="card text-white bg-secondary mb-3" id="candidatesCard">
                 <div class="card-header">CANDIDATES</div>
-                <h6 class="card-title" id="countDown"></h6>
+                <h6 class="card-title" id="countDown">
+                    <div id="startElections" th:text="${#temporals.formatISO(startVoting)}" style="display: none;"></div>
+                    <div id="endVoting" th:text="${#temporals.formatISO(endVoting)}" style="display: none;"></div>
+                </h6>
                 <div class="card-body">
                     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                         <span th:text="${errorMessage}"></span>
@@ -45,7 +48,10 @@
                                 <td th:text = "${candidate.firstName}"></td>
                                 <td th:text = "${candidate.lastName}"></td>
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-sm voteButton" >Vote</button>
+                                    <form th:action="@{/candidate/vote}" method="post">
+                                        <input type="hidden" name="uniqueIdentifier" th:value="${candidate.email}">
+                                        <button type="submit" class="btn btn-primary btn-sm voteButton" >Vote</button>
+                                    </form>
                                 </td>
                             </tr>
                         </tbody>

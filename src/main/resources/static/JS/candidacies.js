@@ -1,8 +1,8 @@
 let intervalId;
+let candidacyDeadlineElement = document.getElementById("candidacyDeadline");
+let candidacyDeadline = candidacyDeadlineElement.textContent;
 
 function remainingTime() {
-    let candidacyDeadlineElement = document.getElementById("candidacyDeadline");
-    let candidacyDeadline = candidacyDeadlineElement.textContent;
     let today = new Date().getTime();
     let deadline = Date.parse(candidacyDeadline);
     let remainingTime = deadline - today;

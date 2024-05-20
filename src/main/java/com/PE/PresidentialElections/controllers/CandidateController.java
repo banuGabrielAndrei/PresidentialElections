@@ -16,6 +16,7 @@ import com.PE.PresidentialElections.service.DatesService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CandidateController {
@@ -35,6 +36,15 @@ public class CandidateController {
 
     @GetMapping("/Presidential-Elections/candidates")
     public String candidatesList(Model model) {
+        Optional<Dates> dbdate = datesService.getDateById(1);
+        LocalDateTime startVoting = dbdate.get().getCandidacyDeadline().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        model.addAttribute("startVoting", startVoting);
+        LocalDateTime endVoting = dbdate.get().getEndVoting().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        model.addAttribute("endVoting", endVoting);
         List<CandidateDto> candidates = candidatesService.findAllCandidates();
         model.addAttribute("candidates", candidates);
         return "candidates";
@@ -61,4 +71,11 @@ public class CandidateController {
             return "candidacy";
         }
     }
+
+    @PostMapping("/candidate/vote")
+    public String voteCandidate(@RequestParam("uniqueIdentifier") String uniqueIdentifier) {
+        candidatesService.voteCandidate(uniqueIdentifier);
+        return "redirect:/Presidential-Elections";
+    }
+
 }

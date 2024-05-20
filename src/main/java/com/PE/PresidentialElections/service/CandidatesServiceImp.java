@@ -1,5 +1,6 @@
 package com.PE.PresidentialElections.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,12 @@ public class CandidatesServiceImp implements CandidatesService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String candidateUsername = (authentication.getName());
         if (candidatesRepository.existsByUsername(candidateUsername)) {
-            throw new IllegalStateException("User has already applied as a candidate.");
+            throw new IllegalStateException("User has already applied as a candidate!");
+        }
+
+        Candidate existingCandidateEmail = candidatesRepository.findByEmail(candidateDto.getEmail());
+        if (existingCandidateEmail != null) {
+            throw new IllegalStateException("This email is already used!");
         }
 
         Candidate candidate = new Candidate();
@@ -51,6 +57,17 @@ public class CandidatesServiceImp implements CandidatesService {
     @Override
     public List<CandidateDto> findAllCandidates() {
         List<Candidate> candidates = candidatesRepository.findAll();
-        return candidates.stream().map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
+        for (Candidate candidate : candidates) {
+            System.out.println(candidate.toString());
+        }
+        return candidates.stream().sorted(Comparator.comparing(Candidate::getId))
+                .map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void voteCandidate(String uniqueIdentifier) {
+        Candidate candidate = candidatesRepository.findByEmail(uniqueIdentifier);
+        candidate.setVotes(candidate.getVotes() + 1);
+        candidatesRepository.save(candidate);
     }
 }

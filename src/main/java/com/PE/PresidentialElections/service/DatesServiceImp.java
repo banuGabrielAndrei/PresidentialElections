@@ -45,6 +45,6 @@ public class DatesServiceImp implements DatesService {
                 .toLocalDateTime();
         LocalDateTime votingDateTime = date.getEndVoting().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         Duration duration = Duration.between(deadlineDateTime, votingDateTime);
-        return duration.toHours() >= 24;
+        return duration.toMinutes() >= 1;
     }
 }

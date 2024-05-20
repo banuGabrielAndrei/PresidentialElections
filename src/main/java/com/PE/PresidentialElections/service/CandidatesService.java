@@ -9,6 +9,8 @@ public interface CandidatesService {
 
     void saveCandidate(CandidateDto candidateDto);
 
+    void voteCandidate(String uniqueIdentifier);
+
     Candidate findByEmail(String email);
 
     List<CandidateDto> findAllCandidates();
