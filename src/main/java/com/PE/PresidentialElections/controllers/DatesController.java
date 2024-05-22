@@ -17,13 +17,13 @@ public class DatesController {
         this.datesService = datesService;
     }
 
-    @GetMapping("Presidential-Elections/set-deadline-dates")
+    @GetMapping("/dates/set-dates")
     public String datesForm(Model model) {
         model.addAttribute("date", new Dates());
         return "dates";
     }
 
-    @PostMapping("/save/dates")
+    @PostMapping("/dates/save")
     public String saveDates(@ModelAttribute("date") Dates date, Model model) {
         try {
             datesService.saveDates(date);

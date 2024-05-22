@@ -32,7 +32,7 @@
                             <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                                 <span th:text="${errorMessage}"></span>
                             </div>
-                            <form method="post" th:action="@{/save/dates}" class="needs-validation" th:object="${date}">
+                            <form method="post" th:action="@{/dates/save}" class="needs-validation" th:object="${date}">
                                 <div class="mb-3">
                                     <label for="candidacyDeadline" class="form-label">Candidacy Deadline</label>
                                     <input type="datetime-local" id="candidacyDeadline" name="candidacyDeadline" class="form-control" th:field="*{candidacyDeadline}" required>

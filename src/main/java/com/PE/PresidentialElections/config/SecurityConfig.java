@@ -30,13 +30,13 @@ public class SecurityConfig {
 						.requestMatchers("/styles/**", "/images/**", "/JS/**").permitAll()
 						.requestMatchers("/", "/register",
 								"/register-error", "/register/save",
-								"/login", "/login-page", "/candidacy", "/candidate/save", "start-app",
-								"Presidential-Elections/candidates", "/candidates")
+								"/login", "/login-page", "/candidacy/form", "/candidate/save", "start-app",
+								"/candidates/list", "/candidates")
 						.permitAll()
 						.requestMatchers("/Presidential-Elections", "/user/profile", "/updateUserDescription",
 								"/candidate/vote")
 						.authenticated()
-						.requestMatchers("Presidential-Elections/set-deadline-dates", "/save/dates")
+						.requestMatchers("/dates/set-dates", "/save/dates")
 						.hasAnyAuthority("ROLE_ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").permitAll()

@@ -28,13 +28,35 @@ public class CandidateController {
         this.datesService = datesService;
     }
 
-    @GetMapping("/candidacy")
+    @GetMapping("/candidacy/form")
     public String candidacyForm(Model model) {
         model.addAttribute("candidate", new CandidateDto());
         return "candidacy";
     }
 
-    @GetMapping("/Presidential-Elections/candidates")
+    @PostMapping("/candidate/save")
+    public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
+        try {
+            Optional<Dates> dbDate = datesService.getDateById(1);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime candidacyDeadLine = dbDate.get().getCandidacyDeadline().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            if (now.isBefore(candidacyDeadLine)) {
+                candidatesService.saveCandidate(candidateDto);
+                return "redirect:/candidates/list";
+            } else {
+                model.addAttribute("candidacyEnds", "You cannot candidate anymore! Elections are already started!");
+                return "candidacy";
+            }
+
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "candidacy";
+        }
+    }
+
+    @GetMapping("/candidates/list")
     public String candidatesList(Model model) {
         Optional<Dates> dbdate = datesService.getDateById(1);
         LocalDateTime startVoting = dbdate.get().getCandidacyDeadline().toInstant()
@@ -48,28 +70,6 @@ public class CandidateController {
         List<CandidateDto> candidates = candidatesService.findAllCandidates();
         model.addAttribute("candidates", candidates);
         return "candidates";
-    }
-
-    @PostMapping("/candidate/save")
-    public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
-        try {
-            Optional<Dates> dbDate = datesService.getDateById(1);
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime candidacyDeadLine = dbDate.get().getCandidacyDeadline().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            if (now.isBefore(candidacyDeadLine)) {
-                candidatesService.saveCandidate(candidateDto);
-                return "redirect:/Presidential-Elections/candidates";
-            } else {
-                model.addAttribute("candidacyEnds", "You cannot candidate anymore! Elections are already started!");
-                return "candidacy";
-            }
-
-        } catch (IllegalStateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "candidacy";
-        }
     }
 
     @PostMapping("/candidate/vote")

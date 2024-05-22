@@ -1,9 +1,5 @@
 package com.PE.PresidentialElections.controllers;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Optional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.PE.PresidentialElections.dataTransfer.UserDto;
-import com.PE.PresidentialElections.models.Dates;
 import com.PE.PresidentialElections.models.UserEntity;
-import com.PE.PresidentialElections.service.DatesService;
 import com.PE.PresidentialElections.service.UserService;
 
 import jakarta.validation.Valid;
@@ -24,16 +18,9 @@ import jakarta.validation.Valid;
 @Controller
 public class UserController {
     private UserService userService;
-    private DatesService datesService;
 
-    public UserController(UserService userService, DatesService datesService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.datesService = datesService;
-    }
-
-    @GetMapping("/")
-    public String startPage() {
-        return "start-app";
     }
 
     @GetMapping("/register")
@@ -61,16 +48,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/Presidential-Elections")
-    public String appPage(Model model) {
-        Optional<Dates> dbdate = datesService.getDateById(1);
-        LocalDateTime endCandidacy = dbdate.get().getCandidacyDeadline().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        model.addAttribute("endCandidacy", endCandidacy);
-        return "Presidential-Elections";
-    }
-
     @GetMapping("/register-error")
     public String errorRegistering() {
         return "register-error";
@@ -88,7 +65,7 @@ public class UserController {
         return "profile";
     }
 
-    @PostMapping("/user/description")
+    @PostMapping("/user/profile/save")
     public String saveDescription(@RequestParam("description") String description,
             @RequestParam("username") String username) {
         userService.addDescription(username, description);

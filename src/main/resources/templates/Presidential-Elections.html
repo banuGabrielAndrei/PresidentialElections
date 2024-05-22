@@ -16,7 +16,7 @@
         </button>
         <ul class="navbar-nav flex-grow-1 justify-content-end">
             <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item">
-                <a class="nav-link" th:href="@{/Presidential-Elections/set-deadline-dates}">📅Set Dates</a>
+                <a class="nav-link" th:href="@{/dates/set-dates}">📅Set Dates</a>
             </li>
             <li class="nav-item"><a class="nav-link" th:href="@{/user/{username}/profile(username=${#authentication.principal.username})}">Profile</a></li>
             <li class="nav-item"><span class="nav-link" th:text="'Hello, ' + ${#authentication.principal.username}"></span></li>
@@ -32,8 +32,8 @@
                 <div class="card-header" id="remainingTime"></div>
                 <div class="card-body">
                     <h6 class="card-title">Put forward candidacy before elections are starting</h6>
-                    <a class="btn btn-success" id="submitCandidate" th:href="@{/candidacy}">CANDIDATE</a>
-                    <a class="btn btn-warning" th:href="@{/Presidential-Elections/candidates}">GO TO CANDIDATES LIST</a>
+                    <a class="btn btn-success" id="submitCandidate" th:href="@{/candidacy/form}">CANDIDATE</a>
+                    <a class="btn btn-warning" th:href="@{/candidates/list}">GO TO CANDIDATES LIST</a>
                 </div>
             </div>
         </div>
