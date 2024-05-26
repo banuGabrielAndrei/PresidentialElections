@@ -57,15 +57,12 @@ public class CandidatesServiceImp implements CandidatesService {
     @Override
     public List<CandidateDto> findAllCandidates() {
         List<Candidate> candidates = candidatesRepository.findAll();
-        for (Candidate candidate : candidates) {
-            System.out.println(candidate.toString());
-        }
         return candidates.stream().sorted(Comparator.comparing(Candidate::getId))
                 .map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
     }
 
     @Override
-    public void voteCandidate(String uniqueIdentifier) {
+    public void incrementVotes(String uniqueIdentifier) {
         Candidate candidate = candidatesRepository.findByEmail(uniqueIdentifier);
         candidate.setVotes(candidate.getVotes() + 1);
         candidatesRepository.save(candidate);

@@ -1,5 +1,6 @@
 package com.PE.PresidentialElections.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,11 +18,9 @@ import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
-    private UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -70,5 +69,10 @@ public class UserController {
             @RequestParam("username") String username) {
         userService.addDescription(username, description);
         return "redirect:/user/" + username + "/profile";
+    }
+
+    @GetMapping("user/vote/message")
+    public String voteMessage() {
+        return "voting";
     }
 }

@@ -16,7 +16,7 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private UserRepository userRepo;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -67,6 +67,17 @@ public class UserServiceImp implements UserService {
         userDto.setLastName(user.getLastName());
         userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
+        userDto.setHasVoted(user.getHasVoted());
         return userDto;
+    }
+
+    @Override
+    public void voteCandidate(UserEntity user) {
+        if (!user.getHasVoted()) {
+            user.setHasVoted(true);
+            userRepo.save(user);
+        } else {
+            throw new IllegalStateException("You can vote only once!");
+        }
     }
 }

@@ -15,5 +15,7 @@ public interface UserService {
 
     UserEntity findByUsername(String username);
 
+    void voteCandidate(UserEntity user);
+
     List<UserDto> findAllUsers();
 }

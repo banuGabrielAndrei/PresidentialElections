@@ -1,17 +1,21 @@
 package com.PE.PresidentialElections.controllers;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.PE.PresidentialElections.dataTransfer.CandidateDto;
 import com.PE.PresidentialElections.models.Dates;
+import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.service.CandidatesService;
 import com.PE.PresidentialElections.service.DatesService;
+import com.PE.PresidentialElections.service.UserService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,13 +24,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CandidateController {
+
+    @Autowired
     private CandidatesService candidatesService;
+
+    @Autowired
     private DatesService datesService;
 
-    public CandidateController(CandidatesService candidatesService, DatesService datesService) {
-        this.candidatesService = candidatesService;
-        this.datesService = datesService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/candidacy/form")
     public String candidacyForm(Model model) {
@@ -73,9 +79,26 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate/vote")
-    public String voteCandidate(@RequestParam("uniqueIdentifier") String uniqueIdentifier) {
-        candidatesService.voteCandidate(uniqueIdentifier);
-        return "redirect:/Presidential-Elections";
+    public String voteCandidate(@RequestParam("uniqueIdentifier") String uniqueIdentifier,
+            Principal principal, Model model) {
+        Optional<Dates> dbDate = datesService.getDateById(1);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endVoting = dbDate.get().getEndVoting().toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+        if (now.isBefore(endVoting)) {
+            String username = principal.getName();
+            UserEntity user = userService.findByUsername(username);
+            try {
+                userService.voteCandidate(user);
+                candidatesService.incrementVotes(uniqueIdentifier);
+                model.addAttribute("voted", "You have voted!");
+                return "/voting";
+            } catch (IllegalStateException e) {
+                model.addAttribute("votingError", e.getMessage());
+                return "/voting";
+            }
+        }
+        model.addAttribute("votingError", "You cannot vote anymore!");
+        return "/voting";
     }
-
 }

@@ -1,6 +1,7 @@
 let intervalId;
 let candidacyDeadlineElement = document.getElementById("candidacyDeadline");
 let candidacyDeadline = candidacyDeadlineElement.textContent;
+let buttonText = document.getElementById("candidatesButtonText");
 
 function remainingTime() {
     let today = new Date().getTime();
@@ -16,6 +17,7 @@ function remainingTime() {
         document.getElementById("submitCandidate").removeAttribute("href");
         document.getElementById("submitCandidate").classList.add("disabled");
         document.getElementById("submitCard").classList.add("bg-danger");
+        buttonText.textContent = "Vote Here!";
         clearInterval(intervalId);
     }
 }

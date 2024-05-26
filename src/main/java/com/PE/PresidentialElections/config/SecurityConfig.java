@@ -31,9 +31,9 @@ public class SecurityConfig {
 						.requestMatchers("/", "/register",
 								"/register-error", "/register/save",
 								"/login", "/login-page", "/candidacy/form", "/candidate/save", "start-app",
-								"/candidates/list", "/candidates")
+								"/candidates/list", "/candidates", "/voting", "/user/vote/message")
 						.permitAll()
-						.requestMatchers("/Presidential-Elections", "/user/profile", "/updateUserDescription",
+						.requestMatchers("/presidential-elections", "/user/profile", "/updateUserDescription",
 								"/candidate/vote")
 						.authenticated()
 						.requestMatchers("/dates/set-dates", "/save/dates")
@@ -41,7 +41,7 @@ public class SecurityConfig {
 						.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").permitAll()
 						.loginProcessingUrl("/login")
-						.defaultSuccessUrl("/Presidential-Elections")
+						.defaultSuccessUrl("/presidential-elections")
 						.failureUrl("/login-page?error=true"))
 				.logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 		return http.build();

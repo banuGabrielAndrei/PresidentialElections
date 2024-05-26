@@ -1,5 +1,6 @@
 package com.PE.PresidentialElections.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +12,9 @@ import com.PE.PresidentialElections.service.DatesService;
 
 @Controller
 public class DatesController {
-    private DatesService datesService;
 
-    public DatesController(DatesService datesService) {
-        this.datesService = datesService;
-    }
+    @Autowired
+    private DatesService datesService;
 
     @GetMapping("/dates/set-dates")
     public String datesForm(Model model) {
@@ -27,7 +26,7 @@ public class DatesController {
     public String saveDates(@ModelAttribute("date") Dates date, Model model) {
         try {
             datesService.saveDates(date);
-            return "redirect:/Presidential-Elections";
+            return "redirect:/presidential-elections";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "dates";
