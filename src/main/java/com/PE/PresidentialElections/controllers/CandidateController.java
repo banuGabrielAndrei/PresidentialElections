@@ -101,4 +101,18 @@ public class CandidateController {
         model.addAttribute("votingError", "You cannot vote anymore!");
         return "/voting";
     }
+
+    @GetMapping("/candidates/results/1stRound")
+    public String resultsFirstRound(Model model) {
+        Optional<Dates> dbDate = datesService.getDateById(1);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endVoting = dbDate.get().getEndVoting().toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+        if (now.isBefore(endVoting)) {
+            model.addAttribute("errorMessage", "Results are shown after voting ends");
+        }
+        List<CandidateDto> candidates = candidatesService.resultsFirstRound();
+        model.addAttribute("candidates", candidates);
+        return "/elections-1stround";
+    }
 }

@@ -12,5 +12,11 @@
 }
 
 .started {
-  color: crimson;
+  color: rgb(254, 254, 254);
+}
+
+h4 {
+  color: blanchedalmond;
+  font: bolder;
+  text-align: center;
 }

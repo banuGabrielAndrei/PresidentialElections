@@ -31,10 +31,11 @@ public class SecurityConfig {
 						.requestMatchers("/", "/register",
 								"/register-error", "/register/save",
 								"/login", "/login-page", "/candidacy/form", "/candidate/save", "start-app",
-								"/candidates/list", "/candidates", "/voting", "/user/vote/message")
+								"/candidates/list", "/candidates", "/voting", "/user/vote/message",
+								"elections-1stround")
 						.permitAll()
 						.requestMatchers("/presidential-elections", "/user/profile", "/updateUserDescription",
-								"/candidate/vote")
+								"/candidate/vote", "/candidates/results/1stRound")
 						.authenticated()
 						.requestMatchers("/dates/set-dates", "/save/dates")
 						.hasAnyAuthority("ROLE_ADMIN")

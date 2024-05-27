@@ -14,4 +14,6 @@ public interface CandidatesService {
     Candidate findByEmail(String email);
 
     List<CandidateDto> findAllCandidates();
+
+    List<CandidateDto> resultsFirstRound();
 }

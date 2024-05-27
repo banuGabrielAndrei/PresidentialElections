@@ -40,7 +40,6 @@ public class CandidatesServiceImp implements CandidatesService {
         if (existingCandidateEmail != null) {
             throw new IllegalStateException("This email is already used!");
         }
-
         Candidate candidate = new Candidate();
         candidate.setFirstName(candidateDto.getFirstName());
         candidate.setLastName(candidateDto.getLastName());
@@ -66,5 +65,12 @@ public class CandidatesServiceImp implements CandidatesService {
         Candidate candidate = candidatesRepository.findByEmail(uniqueIdentifier);
         candidate.setVotes(candidate.getVotes() + 1);
         candidatesRepository.save(candidate);
+    }
+
+    @Override
+    public List<CandidateDto> resultsFirstRound() {
+        List<Candidate> candidates = candidatesRepository.findAll();
+        return candidates.stream().sorted(Comparator.comparing(Candidate::getVotes).reversed())
+                .map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
     }
 }
