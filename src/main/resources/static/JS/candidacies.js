@@ -1,5 +1,5 @@
 let intervalId;
-let candidacyDeadlineElement = document.getElementById("candidacyDeadline");
+let candidacyDeadlineElement = document.getElementById("startElectionProcess");
 let candidacyDeadline = candidacyDeadlineElement.textContent;
 let buttonText = document.getElementById("candidatesButtonText");
 

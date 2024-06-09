@@ -7,29 +7,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.PE.PresidentialElections.models.Dates;
-import com.PE.PresidentialElections.service.DatesService;
+import com.PE.PresidentialElections.models.ElectionsRound;
+import com.PE.PresidentialElections.service.ElectionsRoundService;
 
 @Controller
-public class DatesController {
+public class ElectionsRoundController {
 
     @Autowired
-    private DatesService datesService;
+    private ElectionsRoundService electionsRoundService;
 
-    @GetMapping("/dates/set-dates")
+    @GetMapping("/rounds/set-dates")
     public String datesForm(Model model) {
-        model.addAttribute("date", new Dates());
-        return "dates";
+        model.addAttribute("electionRound", new ElectionsRound());
+        return "election-rounds";
     }
 
-    @PostMapping("/dates/save")
-    public String saveDates(@ModelAttribute("date") Dates date, Model model) {
+    @PostMapping("/rounds/save")
+    public String saveDates(@ModelAttribute("electionRound") ElectionsRound electionRound, Model model) {
         try {
-            datesService.saveDates(date);
+            electionsRoundService.saveRounds(electionRound);
             return "redirect:/presidential-elections";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "dates";
+            return "election-rounds";
         }
     }
 }

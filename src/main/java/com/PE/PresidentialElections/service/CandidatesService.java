@@ -15,5 +15,4 @@ public interface CandidatesService {
 
     List<CandidateDto> findAllCandidates();
 
-    List<CandidateDto> resultsFirstRound();
 }

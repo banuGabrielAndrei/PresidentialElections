@@ -48,7 +48,7 @@
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="email" placeholder="Email address" th:field="*{email}" required>
                         </div>
-                        <button type="submit" class="btn btn-success">Candidate</button>
+                        <button type="submit" class="btn btn-success" th:disabled="${startCandidacy}">Candidate</button>
                     </form>
                 </div>
             </div>

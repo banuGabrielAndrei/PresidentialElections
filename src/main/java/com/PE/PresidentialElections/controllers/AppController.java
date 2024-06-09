@@ -2,21 +2,18 @@ package com.PE.PresidentialElections.controllers;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.PE.PresidentialElections.models.Dates;
-import com.PE.PresidentialElections.service.DatesService;
+import com.PE.PresidentialElections.models.ElectionsRound;
+import com.PE.PresidentialElections.service.ElectionsRoundService;
 
 @Controller
 public class AppController {
 
     @Autowired
-    private DatesService datesService;
+    private ElectionsRoundService electionsRoundService;
 
     @GetMapping("/")
     public String startPage() {
@@ -25,11 +22,13 @@ public class AppController {
 
     @GetMapping("/presidential-elections")
     public String appPage(Model model) {
-        Optional<Dates> dbdate = datesService.getDateById(1);
-        LocalDateTime endCandidacy = dbdate.get().getCandidacyDeadline().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        model.addAttribute("endCandidacy", endCandidacy);
+        ElectionsRound dbdate = electionsRoundService.getCurrentElectionRound();
+            if(dbdate != null) {
+                LocalDateTime startElectionProcess = dbdate.getStartElectionProcess().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+                model.addAttribute("startElectionProcess", startElectionProcess);
+            }
         return "presidential-elections";
     }
 }

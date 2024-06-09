@@ -11,13 +11,21 @@ import org.springframework.stereotype.Service;
 
 import com.PE.PresidentialElections.dataTransfer.CandidateDto;
 import com.PE.PresidentialElections.models.Candidate;
+import com.PE.PresidentialElections.models.ElectionsRound;
 import com.PE.PresidentialElections.repository.CandidatesRepository;
+import com.PE.PresidentialElections.repository.ElectionRoundReposirory;
 
 @Service
 public class CandidatesServiceImp implements CandidatesService {
 
     @Autowired
     private CandidatesRepository candidatesRepository;
+
+    @Autowired 
+    private ElectionRoundReposirory electionRoundReposirory;
+
+    @Autowired
+    private ElectionsRoundService electionsRoundService;
 
     private CandidateDto mapCandidateDto(Candidate candidate) {
         var candidateDto = new CandidateDto();
@@ -45,7 +53,12 @@ public class CandidatesServiceImp implements CandidatesService {
         candidate.setLastName(candidateDto.getLastName());
         candidate.setEmail(candidateDto.getEmail());
         candidate.setUsername(candidateUsername);
+
+        ElectionsRound currElectionsRound = electionsRoundService.getCurrentElectionRound();
+        candidate.getElectionsRounds().add(currElectionsRound);
+        currElectionsRound.getCandidates().add(candidate);
         candidatesRepository.save(candidate);
+        electionRoundReposirory.save(currElectionsRound);
     }
 
     @Override
@@ -65,12 +78,5 @@ public class CandidatesServiceImp implements CandidatesService {
         Candidate candidate = candidatesRepository.findByEmail(uniqueIdentifier);
         candidate.setVotes(candidate.getVotes() + 1);
         candidatesRepository.save(candidate);
-    }
-
-    @Override
-    public List<CandidateDto> resultsFirstRound() {
-        List<Candidate> candidates = candidatesRepository.findAll();
-        return candidates.stream().sorted(Comparator.comparing(Candidate::getVotes).reversed())
-                .map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
     }
 }

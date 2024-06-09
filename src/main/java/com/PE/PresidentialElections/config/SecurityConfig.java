@@ -37,7 +37,7 @@ public class SecurityConfig {
 						.requestMatchers("/presidential-elections", "/user/profile", "/updateUserDescription",
 								"/candidate/vote", "/candidates/results/1stRound")
 						.authenticated()
-						.requestMatchers("/dates/set-dates", "/save/dates")
+						.requestMatchers("/rounds/set-dates", "/rounds/save")
 						.hasAnyAuthority("ROLE_ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/").permitAll()

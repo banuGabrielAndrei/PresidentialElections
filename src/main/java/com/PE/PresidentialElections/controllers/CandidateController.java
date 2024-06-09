@@ -4,17 +4,15 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.PE.PresidentialElections.dataTransfer.CandidateDto;
-import com.PE.PresidentialElections.models.Dates;
+import com.PE.PresidentialElections.models.ElectionsRound;
 import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.service.CandidatesService;
-import com.PE.PresidentialElections.service.DatesService;
+import com.PE.PresidentialElections.service.ElectionsRoundService;
 import com.PE.PresidentialElections.service.UserService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +27,7 @@ public class CandidateController {
     private CandidatesService candidatesService;
 
     @Autowired
-    private DatesService datesService;
+    private ElectionsRoundService electionsRoundService;
 
     @Autowired
     private UserService userService;
@@ -43,9 +41,9 @@ public class CandidateController {
     @PostMapping("/candidate/save")
     public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
         try {
-            Optional<Dates> dbDate = datesService.getDateById(1);
+           ElectionsRound dbDate = electionsRoundService.getCurrentElectionRound();
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime candidacyDeadLine = dbDate.get().getCandidacyDeadline().toInstant()
+            LocalDateTime candidacyDeadLine = dbDate.getStartElectionProcess().toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             if (now.isBefore(candidacyDeadLine)) {
@@ -64,12 +62,12 @@ public class CandidateController {
 
     @GetMapping("/candidates/list")
     public String candidatesList(Model model) {
-        Optional<Dates> dbdate = datesService.getDateById(1);
-        LocalDateTime startVoting = dbdate.get().getCandidacyDeadline().toInstant()
+        ElectionsRound dbdate = electionsRoundService.getCurrentElectionRound();
+        LocalDateTime startVoting = dbdate.getStartElectionProcess().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
         model.addAttribute("startVoting", startVoting);
-        LocalDateTime endVoting = dbdate.get().getEndVoting().toInstant()
+        LocalDateTime endVoting = dbdate.getEndElectionProcess().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
         model.addAttribute("endVoting", endVoting);
@@ -81,9 +79,9 @@ public class CandidateController {
     @PostMapping("/candidate/vote")
     public String voteCandidate(@RequestParam("uniqueIdentifier") String uniqueIdentifier,
             Principal principal, Model model) {
-        Optional<Dates> dbDate = datesService.getDateById(1);
+        ElectionsRound dbDate = electionsRoundService.getCurrentElectionRound();
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endVoting = dbDate.get().getEndVoting().toInstant()
+        LocalDateTime endVoting = dbDate.getEndElectionProcess().toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime();
         if (now.isBefore(endVoting)) {
             String username = principal.getName();
@@ -100,19 +98,5 @@ public class CandidateController {
         }
         model.addAttribute("votingError", "You cannot vote anymore!");
         return "/voting";
-    }
-
-    @GetMapping("/candidates/results/1stRound")
-    public String resultsFirstRound(Model model) {
-        Optional<Dates> dbDate = datesService.getDateById(1);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endVoting = dbDate.get().getEndVoting().toInstant()
-                .atZone(ZoneId.systemDefault()).toLocalDateTime();
-        if (now.isBefore(endVoting)) {
-            model.addAttribute("errorMessage", "Results are shown after voting ends");
-        }
-        List<CandidateDto> candidates = candidatesService.resultsFirstRound();
-        model.addAttribute("candidates", candidates);
-        return "/elections-1stround";
     }
 }

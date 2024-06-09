@@ -32,17 +32,21 @@
                             <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                                 <span th:text="${errorMessage}"></span>
                             </div>
-                            <form method="post" th:action="@{/dates/save}" class="needs-validation" th:object="${date}">
+                            <form method="post" th:action="@{/rounds/save}" class="needs-validation" th:object="${electionRound}">
                                 <div class="mb-3">
-                                    <label for="candidacyDeadline" class="form-label">Candidacy Deadline</label>
-                                    <input type="datetime-local" id="candidacyDeadline" name="candidacyDeadline" class="form-control" th:field="*{candidacyDeadline}" required>
+                                    <label for="title" class="form-label">Title/Round Number</label>
+                                    <input type="text" class="form-control" id="text" placeholder="Round Number" th:field="*{title}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="endVoting" class="form-label">End Voting</label>
-                                    <input type="datetime-local" id="endVoting" name="endVoting" class="form-control" th:field="*{endVoting}" required>
+                                    <label for="candidacyDeadline" class="form-label">Start Election Process</label>
+                                    <input type="datetime-local" id="candidacyDeadline" name="candidacyDeadline" class="form-control" th:field="*{startElectionProcess}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Save Dates</button>
+                                    <label for="endVoting" class="form-label">End Election Process</label>
+                                    <input type="datetime-local" id="endVoting" name="endVoting" class="form-control" th:field="*{endElectionProcess}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Save Round</button>
                                 </div>
                             </form>
                         </div>

@@ -1,10 +1,14 @@
 package com.PE.PresidentialElections.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,4 +42,7 @@ public class Candidate {
 
     @Column
     private Integer votes = 0;
+
+    @ManyToMany(mappedBy = "candidates")
+    private Set<ElectionsRound> electionsRounds = new HashSet<>();
 }
