@@ -2,6 +2,7 @@ package com.PE.PresidentialElections.service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +56,11 @@ public class CandidatesServiceImp implements CandidatesService {
         candidate.setUsername(candidateUsername);
 
         ElectionsRound currElectionsRound = electionsRoundService.getCurrentElectionRound();
-        candidate.getElectionsRounds().add(currElectionsRound);
+        candidate.setElectionsRound(currElectionsRound);
         currElectionsRound.getCandidates().add(candidate);
         candidatesRepository.save(candidate);
         electionRoundReposirory.save(currElectionsRound);
+        
     }
 
     @Override
@@ -68,7 +70,8 @@ public class CandidatesServiceImp implements CandidatesService {
 
     @Override
     public List<CandidateDto> findAllCandidates() {
-        List<Candidate> candidates = candidatesRepository.findAll();
+        ElectionsRound currentRound = electionsRoundService.getCurrentElectionRound();
+        Set<Candidate> candidates = currentRound.getCandidates();
         return candidates.stream().sorted(Comparator.comparing(Candidate::getId))
                 .map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
     }

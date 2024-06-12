@@ -41,9 +41,9 @@ public class CandidateController {
     @PostMapping("/candidate/save")
     public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
         try {
-           ElectionsRound dbDate = electionsRoundService.getCurrentElectionRound();
+           ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime candidacyDeadLine = dbDate.getStartElectionProcess().toInstant()
+            LocalDateTime candidacyDeadLine = dbRound.getStartElectionProcess().toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             if (now.isBefore(candidacyDeadLine)) {
@@ -62,12 +62,12 @@ public class CandidateController {
 
     @GetMapping("/candidates/list")
     public String candidatesList(Model model) {
-        ElectionsRound dbdate = electionsRoundService.getCurrentElectionRound();
-        LocalDateTime startVoting = dbdate.getStartElectionProcess().toInstant()
+        ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
+        LocalDateTime startVoting = dbRound.getStartElectionProcess().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
         model.addAttribute("startVoting", startVoting);
-        LocalDateTime endVoting = dbdate.getEndElectionProcess().toInstant()
+        LocalDateTime endVoting = dbRound.getEndElectionProcess().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
         model.addAttribute("endVoting", endVoting);
@@ -79,9 +79,9 @@ public class CandidateController {
     @PostMapping("/candidate/vote")
     public String voteCandidate(@RequestParam("uniqueIdentifier") String uniqueIdentifier,
             Principal principal, Model model) {
-        ElectionsRound dbDate = electionsRoundService.getCurrentElectionRound();
+        ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endVoting = dbDate.getEndElectionProcess().toInstant()
+        LocalDateTime endVoting = dbRound.getEndElectionProcess().toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime();
         if (now.isBefore(endVoting)) {
             String username = principal.getName();
