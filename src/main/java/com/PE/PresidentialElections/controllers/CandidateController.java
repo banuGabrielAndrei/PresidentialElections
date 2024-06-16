@@ -41,7 +41,7 @@ public class CandidateController {
     @PostMapping("/candidate/save")
     public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
         try {
-           ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
+            ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime candidacyDeadLine = dbRound.getStartElectionProcess().toInstant()
                     .atZone(ZoneId.systemDefault())
@@ -77,8 +77,8 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate/vote")
-    public String voteCandidate(@RequestParam("uniqueIdentifier") String uniqueIdentifier,
-            Principal principal, Model model) {
+    public String voteCandidate(@RequestParam("candidateId") Integer candidateId,
+                                Principal principal, Model model) {
         ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime endVoting = dbRound.getEndElectionProcess().toInstant()
@@ -88,7 +88,7 @@ public class CandidateController {
             UserEntity user = userService.findByUsername(username);
             try {
                 userService.voteCandidate(user);
-                candidatesService.incrementVotes(uniqueIdentifier);
+                candidatesService.incrementVotes(candidateId);
                 model.addAttribute("voted", "You have voted!");
                 return "/voting";
             } catch (IllegalStateException e) {

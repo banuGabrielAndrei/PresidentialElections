@@ -1,5 +1,7 @@
 package com.PE.PresidentialElections.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,5 +33,12 @@ public class ElectionsRoundController {
             model.addAttribute("errorMessage", e.getMessage());
             return "election-rounds";
         }
+    }
+
+    @GetMapping("/rounds/results")
+    public String roundsResults(Model model) {
+        List<ElectionsRound> electionRounds = electionsRoundService.getAllRounds();
+        model.addAttribute("electionRounds", electionRounds);
+        return "election-results";
     }
 }

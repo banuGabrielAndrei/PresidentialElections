@@ -1,8 +1,7 @@
 package com.PE.PresidentialElections.models;
 
 import java.util.Date;
-import java.util.Set;
-
+import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CascadeType;
@@ -42,5 +41,5 @@ public class ElectionsRound {
     private Date endElectionProcess;
 
     @OneToMany(mappedBy = "electionsRound", cascade = CascadeType.ALL)
-    private Set<Candidate> candidates;
+    private List<Candidate> candidates;
 }

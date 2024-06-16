@@ -1,5 +1,6 @@
 package com.PE.PresidentialElections.service;
 
+import java.util.List;
 import java.util.Optional;
 import com.PE.PresidentialElections.models.ElectionsRound;
 
@@ -14,4 +15,6 @@ public interface ElectionsRoundService {
     boolean isValidNewRound(ElectionsRound electionsRound);
 
     ElectionsRound getCurrentElectionRound();
+
+    List<ElectionsRound> getAllRounds();
 }

@@ -35,7 +35,7 @@ public class SecurityConfig {
 								"elections-1stround")
 						.permitAll()
 						.requestMatchers("/presidential-elections", "/user/profile", "/updateUserDescription",
-								"/candidate/vote", "/candidates/results/1stRound")
+								"/candidate/vote", "/rounds/results")
 						.authenticated()
 						.requestMatchers("/rounds/set-dates", "/rounds/save")
 						.hasAnyAuthority("ROLE_ADMIN")

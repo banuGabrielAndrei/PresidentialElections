@@ -27,7 +27,7 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-4">
-            <h4>First Round</h4>
+            <h4>CANDIDACY</h4>
             <div class="card text-white bg-secondary mb-3" id="submitCard">
                 <div id="startElectionProcess" th:text="${#temporals.formatISO(startElectionProcess)}" style="display: none;"></div>
                 <div class="card-header" id="remainingTime"></div>
@@ -37,23 +37,22 @@
                     <a id="candidatesButtonText" class="btn btn-warning" th:href="@{/candidates/list}">GO TO CANDIDATES LIST</a>
                 </div>
             </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <h4>ELECTION ROUNDS / RESULTS</h4>
             <div class="card text-white bg-success mb-3" style="max-width: 18rem;" id="ranking">
                 <img th:src="@{/images/podium.png}" class="card-img-top" alt="">
                 <div class="card-body">
                   <h5 class="card-title">RANKING</h5>
                     <div class="nav-item">
-                        <a class="nav-link" th:href="@{/candidates/results/1stRound}">
+                        <a class="nav-link" th:href="@{/rounds/results}">
                             <button type="button" class="btn btn-light ml-2">Go To Elections Results</button>
                          </a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <h4>Final Round</h4>
-        </div>
-        <div class="col-md-4">
-            <h4>Elections Result</h4>
         </div>
     </div>
 </div>

@@ -2,7 +2,6 @@ package com.PE.PresidentialElections.service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class CandidatesServiceImp implements CandidatesService {
     private CandidatesRepository candidatesRepository;
 
     @Autowired 
-    private ElectionRoundReposirory electionRoundReposirory;
+    private ElectionRoundReposirory electionRoundRepository;
 
     @Autowired
     private ElectionsRoundService electionsRoundService;
@@ -40,27 +39,30 @@ public class CandidatesServiceImp implements CandidatesService {
     @Override
     public void saveCandidate(CandidateDto candidateDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String candidateUsername = (authentication.getName());
-        if (candidatesRepository.existsByUsername(candidateUsername)) {
-            throw new IllegalStateException("User has already applied as a candidate!");
+        String candidateUsername = authentication.getName();
+        ElectionsRound currentRound = electionsRoundService.getCurrentElectionRound();
+
+        boolean candidateUsernameExists = currentRound.getCandidates().stream()
+        .anyMatch(candidate -> candidate.getUsername().equals(candidateUsername));
+        if (candidateUsernameExists) {
+            throw new IllegalStateException("You already applied as a candidate in the current election round!");
         }
 
-        Candidate existingCandidateEmail = candidatesRepository.findByEmail(candidateDto.getEmail());
-        if (existingCandidateEmail != null) {
-            throw new IllegalStateException("This email is already used!");
-        }
+        boolean candidateEmailExists = currentRound.getCandidates().stream()
+        .anyMatch(candidate -> candidate.getEmail().equals(candidateDto.getEmail()));
+        if (candidateEmailExists) {
+            throw new IllegalStateException("Email already used!");
+    }
+
         Candidate candidate = new Candidate();
         candidate.setFirstName(candidateDto.getFirstName());
         candidate.setLastName(candidateDto.getLastName());
         candidate.setEmail(candidateDto.getEmail());
         candidate.setUsername(candidateUsername);
-
-        ElectionsRound currElectionsRound = electionsRoundService.getCurrentElectionRound();
-        candidate.setElectionsRound(currElectionsRound);
-        currElectionsRound.getCandidates().add(candidate);
+        candidate.setElectionsRound(currentRound);
+        currentRound.getCandidates().add(candidate);
         candidatesRepository.save(candidate);
-        electionRoundReposirory.save(currElectionsRound);
-        
+        electionRoundRepository.save(currentRound);
     }
 
     @Override
@@ -71,15 +73,17 @@ public class CandidatesServiceImp implements CandidatesService {
     @Override
     public List<CandidateDto> findAllCandidates() {
         ElectionsRound currentRound = electionsRoundService.getCurrentElectionRound();
-        Set<Candidate> candidates = currentRound.getCandidates();
+        List<Candidate> candidates = currentRound.getCandidates();
         return candidates.stream().sorted(Comparator.comparing(Candidate::getId))
                 .map((candidate) -> mapCandidateDto(candidate)).collect(Collectors.toList());
     }
 
     @Override
-    public void incrementVotes(String uniqueIdentifier) {
-        Candidate candidate = candidatesRepository.findByEmail(uniqueIdentifier);
+    public void incrementVotes(Integer candidateId) {
+        Candidate candidate = candidatesRepository.findById(candidateId)
+            .orElseThrow(() -> new IllegalArgumentException("id not found"));
         candidate.setVotes(candidate.getVotes() + 1);
         candidatesRepository.save(candidate);
+        System.out.println(candidate.getId().toString()+ "aici");
     }
 }

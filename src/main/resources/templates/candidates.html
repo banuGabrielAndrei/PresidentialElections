@@ -44,20 +44,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each = "candidate : ${candidates}">
-                                <td th:text = "${candidate.firstName}"></td>
-                                <td th:text = "${candidate.lastName}"></td>
+                            <tr th:each="candidate : ${candidates}">
+                                <td th:text="${candidate.firstName}"></td>
+                                <td th:text="${candidate.lastName}"></td>
                                 <td>
                                     <form th:action="@{/candidate/vote}" method="post">
-                                        <input type="hidden" name="uniqueIdentifier" th:value="${candidate.email}">
-                                        <button type="submit" class="btn btn-primary btn-sm voteButton" >Vote</button>
+                                        <input type="hidden" th:name="candidateId" th:value="${candidate.id}">
+                                        <button type="submit" class="btn btn-primary btn-sm voteButton">Vote</button>
                                     </form>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
 </div>

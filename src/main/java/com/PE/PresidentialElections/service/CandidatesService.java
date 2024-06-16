@@ -9,7 +9,7 @@ public interface CandidatesService {
 
     void saveCandidate(CandidateDto candidateDto);
 
-    void incrementVotes(String uniqueIdentifier);
+    void incrementVotes(Integer candidateId);
 
     Candidate findByEmail(String email);
 
