@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.PE.PresidentialElections.dataTransfer.UserDto;
 import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.service.UserService;
 
@@ -24,17 +23,17 @@ public class UserController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        UserDto user = new UserDto();
+        UserEntity user = new UserEntity();
         model.addAttribute("user", user);
         return "register";
     }
 
     @PostMapping("/register/save")
-    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
+    public String registration(@Valid @ModelAttribute("user") UserEntity user,
             BindingResult result,
             Model model) {
         try {
-            userService.saveUser(userDto);
+            userService.saveUser(user);
             return "redirect:/login-page";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("email")) {
@@ -42,7 +41,7 @@ public class UserController {
             } else if (e.getMessage().contains("Username")) {
                 result.rejectValue("username", "error", e.getMessage());
             }
-            model.addAttribute("user", userDto);
+            model.addAttribute("user", user);
             return "register-error";
         }
     }

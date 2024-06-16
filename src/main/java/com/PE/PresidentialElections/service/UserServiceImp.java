@@ -1,13 +1,10 @@
 package com.PE.PresidentialElections.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.PE.PresidentialElections.dataTransfer.UserDto;
 import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.repository.UserRepository;
 
@@ -21,19 +18,14 @@ public class UserServiceImp implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void saveUser(UserDto userDto) {
-        if (userRepo.findByEmail(userDto.getEmail()) != null) {
+    public void saveUser(UserEntity user) {
+        if (userRepo.findByEmail(user.getEmail()) != null) {
             throw new IllegalArgumentException("Email is already in use");
         }
-        if (userRepo.findByUsername(userDto.getUsername()) != null) {
+        if (userRepo.findByUsername(user.getUsername()) != null) {
             throw new IllegalArgumentException("Username is already in use");
         }
-        UserEntity user = new UserEntity();
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
         userRepo.save(user);
     }
@@ -56,19 +48,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<UserDto> findAllUsers() {
+    public List<UserEntity> findAllUsers() {
         List<UserEntity> users = userRepo.findAll();
-        return users.stream().map((user) -> mapUserDto(user)).collect(Collectors.toList());
-    }
-
-    private UserDto mapUserDto(UserEntity user) {
-        var userDto = new UserDto();
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setUsername(user.getUsername());
-        userDto.setEmail(user.getEmail());
-        userDto.setHasVoted(user.getHasVoted());
-        return userDto;
+        return users;
     }
 
     @Override

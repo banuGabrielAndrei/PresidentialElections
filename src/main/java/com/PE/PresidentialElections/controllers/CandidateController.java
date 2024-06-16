@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import com.PE.PresidentialElections.dataTransfer.CandidateDto;
+import com.PE.PresidentialElections.models.Candidate;
 import com.PE.PresidentialElections.models.ElectionsRound;
 import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.service.CandidatesService;
@@ -34,12 +34,12 @@ public class CandidateController {
 
     @GetMapping("/candidacy/form")
     public String candidacyForm(Model model) {
-        model.addAttribute("candidate", new CandidateDto());
+        model.addAttribute("candidate", new Candidate());
         return "candidacy";
     }
 
     @PostMapping("/candidate/save")
-    public String saveCandidate(@ModelAttribute("candidate") CandidateDto candidateDto, Model model) {
+    public String saveCandidate(@ModelAttribute("candidate") Candidate candidate, Model model) {
         try {
             ElectionsRound dbRound = electionsRoundService.getCurrentElectionRound();
             LocalDateTime now = LocalDateTime.now();
@@ -47,7 +47,7 @@ public class CandidateController {
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             if (now.isBefore(candidacyDeadLine)) {
-                candidatesService.saveCandidate(candidateDto);
+                candidatesService.saveCandidate(candidate);
                 return "redirect:/candidates/list";
             } else {
                 model.addAttribute("candidacyEnds", "You cannot candidate anymore! Elections are already started!");
@@ -71,7 +71,7 @@ public class CandidateController {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
         model.addAttribute("endVoting", endVoting);
-        List<CandidateDto> candidates = candidatesService.findAllCandidates();
+        List<Candidate> candidates = candidatesService.findAllCandidates();
         model.addAttribute("candidates", candidates);
         return "candidates";
     }

@@ -33,7 +33,7 @@ public class ElectionsRoundServiceImp implements ElectionsRoundService {
             "and end election is not valid");
         }
         if (!isValidNewRound(electionsRound)) {
-            throw new IllegalStateException("You cannot set the start date for " +
+            throw new IllegalStateException("You cannot start " +
             "a new round before the current round ends.");
         }
         List<UserEntity> users = userRepository.findAll();
