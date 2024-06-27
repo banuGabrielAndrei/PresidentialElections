@@ -10,8 +10,6 @@ public interface CandidatesService {
 
     void incrementVotes(Integer candidateId);
 
-    Candidate findByEmail(String email);
-
     List<Candidate> findAllCandidates();
 
 }

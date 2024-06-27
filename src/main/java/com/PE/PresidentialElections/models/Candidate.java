@@ -33,9 +33,6 @@ public class Candidate {
     private String lastName;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
     private String username;
 
     @Column

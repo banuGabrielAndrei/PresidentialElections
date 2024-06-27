@@ -6,7 +6,5 @@ import com.PE.PresidentialElections.models.Candidate;
 
 public interface CandidatesRepository extends JpaRepository<Candidate, Integer> {
 
-    Candidate findByEmail(String email);
-
     boolean existsByUsername(String username);
 }

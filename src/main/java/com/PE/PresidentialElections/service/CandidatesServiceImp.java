@@ -38,22 +38,11 @@ public class CandidatesServiceImp implements CandidatesService {
             throw new IllegalStateException("You already applied as a candidate in the current election round!");
         }
 
-        boolean candidateEmailExists = currentRound.getCandidates().stream()
-                .anyMatch(c -> c.getEmail().equals(candidate.getEmail()));
-        if (candidateEmailExists) {
-            throw new IllegalStateException("Email already used!");
-        }
-
         candidate.setUsername(candidateUsername);
         candidate.setElectionsRound(currentRound);
         currentRound.getCandidates().add(candidate);
         candidatesRepository.save(candidate);
         electionRoundRepository.save(currentRound);
-}
-
-    @Override
-    public Candidate findByEmail(String email) {
-        return candidatesRepository.findByEmail(email);
     }
 
     @Override
@@ -63,7 +52,7 @@ public class CandidatesServiceImp implements CandidatesService {
         return candidates.stream()
                 .sorted(Comparator.comparing(Candidate::getId))
                 .collect(Collectors.toList());
-}
+    }
 
     @Override
     public void incrementVotes(Integer candidateId) {
