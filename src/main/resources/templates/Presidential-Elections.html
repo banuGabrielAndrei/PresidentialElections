@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
@@ -25,38 +25,36 @@
     </div>
 </nav>
 <div class="container mt-5">
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-4">
-            <h4>CANDIDACY</h4>
-            <div class="card text-white bg-secondary mb-3" id="submitCard">
-                <div id="startElectionProcess" th:text="${#temporals.formatISO(startElectionProcess)}" style="display: none;"></div>
-                <div class="card-header" id="remainingTime"></div>
+            <div class="card text-white bg-success mb-3">
                 <div class="card-body">
-                    <h6 class="card-title">Put forward candidacy <br> before elections are starting</h6>
-                    <a class="btn btn-success" id="submitCandidate" th:href="@{/candidacy/form}">CANDIDATE</a>
-                    <a id="candidatesButtonText" class="btn btn-warning" th:href="@{/candidates/list}">GO TO CANDIDATES LIST</a>
+                    <h4 class="card-title">AVAILABLE ELECTION ROUNDS</h4>
+                    <ul class="list-group">
+                        <li th:each="electionRound : ${electionRounds}" class="list-group-item">
+                            <a th:href="@{/election-rounds-details/{id}(id=${electionRound.id})}">
+                                Round <span th:text="${electionRound.id}"></span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-        </div>
-        <div class="col-md-4">
-            <h4>ELECTION ROUNDS / RESULTS</h4>
-            <div class="card text-white bg-success mb-3" style="max-width: 18rem;" id="ranking">
+            <div class="card text-white bg-success mb-3" id="ranking">
                 <img th:src="@{/images/podium.png}" class="card-img-top" alt="">
                 <div class="card-body">
-                  <h5 class="card-title">RANKING</h5>
+                    <h4 class="card-title">ELECTION ROUNDS / RESULTS</h4>
                     <div class="nav-item">
                         <a class="nav-link" th:href="@{/rounds/results}">
                             <button type="button" class="btn btn-light ml-2">Go To Elections Results</button>
-                         </a>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript" th:src="@{/JS/candidacies.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

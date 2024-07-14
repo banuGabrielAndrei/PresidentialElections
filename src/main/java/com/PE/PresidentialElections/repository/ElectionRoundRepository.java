@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.PE.PresidentialElections.models.ElectionsRound;
 
-public interface ElectionRoundReposirory extends JpaRepository<ElectionsRound, Integer> {
+public interface ElectionRoundRepository extends JpaRepository<ElectionsRound, Integer> {
 
     @SuppressWarnings("null")
     Optional<ElectionsRound> findById(Integer id);

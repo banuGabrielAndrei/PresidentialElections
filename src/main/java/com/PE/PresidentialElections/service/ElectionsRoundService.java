@@ -14,7 +14,5 @@ public interface ElectionsRoundService {
 
     boolean isValidNewRound(ElectionsRound electionsRound);
 
-    ElectionsRound getCurrentElectionRound();
-
     List<ElectionsRound> getAllRounds();
 }

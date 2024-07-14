@@ -1,7 +1,7 @@
 package com.PE.PresidentialElections.controllers;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,13 +22,8 @@ public class AppController {
 
     @GetMapping("/presidential-elections")
     public String appPage(Model model) {
-        ElectionsRound dbdate = electionsRoundService.getCurrentElectionRound();
-            if(dbdate != null) {
-                LocalDateTime startElectionProcess = dbdate.getStartElectionProcess().toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime();
-                model.addAttribute("startElectionProcess", startElectionProcess);
-            }
+        List<ElectionsRound> electionRounds = electionsRoundService.getAllRounds();
+        model.addAttribute("electionRounds", electionRounds);
         return "presidential-elections";
     }
 }

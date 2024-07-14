@@ -45,8 +45,8 @@
                             </thead>
                             <tbody>
                                 <tr th:each="candidate : ${round.candidates}">
-                                    <td th:text="${candidate.firstName}"></td>
-                                    <td th:text="${candidate.lastName}"></td>
+                                    <td th:text="${candidate.user.firstName}"></td>
+                                    <td th:text="${candidate.user.lastName}"></td>
                                     <td th:text="${candidate.votes}"></td>
                                 </tr>
                             </tbody>

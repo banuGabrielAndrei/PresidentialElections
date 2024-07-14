@@ -1,10 +1,12 @@
 package com.PE.PresidentialElections.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,4 +47,7 @@ public class UserEntity {
 
         @Column(nullable = false)
         private Boolean hasVoted = false;
+
+        @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+        private Candidate candidate;
 }

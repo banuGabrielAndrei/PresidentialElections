@@ -45,11 +45,12 @@
                         </thead>
                         <tbody>
                             <tr th:each="candidate : ${candidates}">
-                                <td th:text="${candidate.firstName}"></td>
-                                <td th:text="${candidate.lastName}"></td>
+                                <td th:text="${candidate.user.firstName}"></td>
+                                <td th:text="${candidate.user.lastName}"></td>
                                 <td>
                                     <form th:action="@{/candidate/vote}" method="post">
                                         <input type="hidden" name="candidateId" th:value="${candidate.id}">
+                                        <input type="hidden" name="roundId" th:value="${candidate.electionsRound.id}">
                                         <button type="submit" class="btn btn-primary btn-sm voteButton">Vote</button>
                                     </form>
                                 </td>

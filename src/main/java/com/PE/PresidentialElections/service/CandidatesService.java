@@ -6,10 +6,10 @@ import com.PE.PresidentialElections.models.Candidate;
 
 public interface CandidatesService {
 
-    void saveCandidate(Candidate candidate);
+    void saveCandidate(Candidate candidate, Integer id);
 
     void incrementVotes(Integer candidateId);
 
-    List<Candidate> findAllCandidates();
+    List<Candidate> findAllCandidates(Integer id);
 
 }

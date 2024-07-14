@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,19 +27,14 @@ public class Candidate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
-
-    @Column(nullable = false)
-    private String username;
-
     @Column
     private Integer votes = 0;
 
     @ManyToOne
     @JoinColumn(name = "election_round_id")
     private ElectionsRound electionsRound;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }

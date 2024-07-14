@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 import com.PE.PresidentialElections.models.Candidate;
 import com.PE.PresidentialElections.models.ElectionsRound;
 import com.PE.PresidentialElections.models.UserEntity;
-import com.PE.PresidentialElections.repository.ElectionRoundReposirory;
+import com.PE.PresidentialElections.repository.ElectionRoundRepository;
 import com.PE.PresidentialElections.repository.UserRepository;
 
 @Service
 public class ElectionsRoundServiceImp implements ElectionsRoundService {
 
     @Autowired
-    private ElectionRoundReposirory electionRoundReposirory;
+    private ElectionRoundRepository electionRoundReposirory;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,28 +63,10 @@ public class ElectionsRoundServiceImp implements ElectionsRoundService {
 
     @Override
     public boolean isValidNewRound(ElectionsRound electionsRound) {
-        List<ElectionsRound> rounds = electionRoundReposirory.findAll();
-        if (!rounds.isEmpty()) {
-            rounds.sort(Comparator.comparing(ElectionsRound::getId).reversed());
-            ElectionsRound latestRound = rounds.get(0);
-            LocalDateTime endRound = latestRound.getEndElectionProcess()
+        LocalDateTime newRound = electionsRound.getStartElectionProcess()
                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            LocalDateTime newRound = electionsRound.getStartElectionProcess()
-                .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            LocalDateTime now = LocalDateTime.now();
-            return newRound.isAfter(endRound) && endRound.isBefore(now);
-        }
-        return true;
-    }
-
-    @Override
-    public ElectionsRound getCurrentElectionRound() {
-        List<ElectionsRound> rounds = electionRoundReposirory.findAll();
-        if (!rounds.isEmpty()) {
-            rounds.sort(Comparator.comparing(ElectionsRound::getId).reversed());
-            return rounds.get(0);
-        }
-        return null;
+        LocalDateTime now = LocalDateTime.now();
+        return !newRound.isBefore(now);
     }
 
     @Override
