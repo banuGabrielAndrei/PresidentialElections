@@ -55,11 +55,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void voteCandidate(UserEntity user) {
-        if (!user.getHasVoted()) {
-            user.setHasVoted(true);
-            userRepo.save(user);
-        } else {
-            throw new IllegalStateException("You can vote only once!");
-        }
+        
     }
 }

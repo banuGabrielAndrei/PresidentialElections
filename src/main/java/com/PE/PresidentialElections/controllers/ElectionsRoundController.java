@@ -1,8 +1,6 @@
 package com.PE.PresidentialElections.controllers;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,19 +26,12 @@ public class ElectionsRoundController {
 
     @GetMapping("/election-rounds-details/{id}")
     public String getElectionRound(@PathVariable Integer id, Model model) {
-        Optional<ElectionsRound> electionsRoundOptional = electionsRoundService.getRoundById(id);
-        if (electionsRoundOptional.isPresent()) {
-            ElectionsRound electionsRound = electionsRoundOptional.get();
-            model.addAttribute("electionRound", electionsRound);
-            return "election-rounds-details"; 
-        } else {
-            model.addAttribute("errorMessage", "Election round not found");
-            return "presidential-election";
-        }
+        ElectionsRound electionsRound = electionsRoundService.getRoundById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Invalid round ID: " + id));
+        model.addAttribute("electionRound", electionsRound);
+        return "election-rounds-details"; 
     }
-
-
-
+    
     @PostMapping("/rounds/save")
     public String saveDates(@ModelAttribute("electionRound") ElectionsRound electionRound, Model model) {
         try {

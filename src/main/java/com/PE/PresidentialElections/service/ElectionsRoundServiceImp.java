@@ -13,18 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.PE.PresidentialElections.models.Candidate;
 import com.PE.PresidentialElections.models.ElectionsRound;
-import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.repository.ElectionRoundRepository;
-import com.PE.PresidentialElections.repository.UserRepository;
 
 @Service
 public class ElectionsRoundServiceImp implements ElectionsRoundService {
 
     @Autowired
     private ElectionRoundRepository electionRoundReposirory;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     public void saveRounds(ElectionsRound electionsRound) {
@@ -35,13 +30,6 @@ public class ElectionsRoundServiceImp implements ElectionsRoundService {
         if (!isValidNewRound(electionsRound)) {
             throw new IllegalStateException("You cannot start " +
             "a new round before the current round ends.");
-        }
-        List<UserEntity> users = userRepository.findAll();
-        if (!users.isEmpty()) {
-            for (UserEntity userVoting : users) {
-                userVoting.setHasVoted(false);
-                userRepository.save(userVoting);
-            }
         }
         electionRoundReposirory.save(electionsRound);
     }

@@ -4,7 +4,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import com.PE.PresidentialElections.models.Candidate;
 import com.PE.PresidentialElections.models.ElectionsRound;
 import com.PE.PresidentialElections.models.UserEntity;
+import com.PE.PresidentialElections.repository.UserRepository;
 import com.PE.PresidentialElections.service.CandidatesService;
 import com.PE.PresidentialElections.service.ElectionsRoundService;
 import com.PE.PresidentialElections.service.UserService;
@@ -33,6 +34,9 @@ public class CandidateController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/candidacy-error")
     public String candidacyError() {
         return "candidacy-error";
@@ -41,25 +45,19 @@ public class CandidateController {
     @PostMapping("/candidate/save")
     public String saveCandidate(Model model, @RequestParam("roundId") Integer id) {
         try {
-            Optional<ElectionsRound> roundOptional = electionsRoundService.getRoundById(id);
-
-            if (roundOptional.isPresent()) {
-                ElectionsRound dbRound = roundOptional.get();
-                LocalDateTime now = LocalDateTime.now();
-                LocalDateTime startVoting = dbRound.getStartElectionProcess().toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime();
-                if (now.isBefore(startVoting)) {
-                    model.addAttribute("electionRound", dbRound);
-                    Candidate candidate = new Candidate();
-                    candidatesService.saveCandidate(candidate, dbRound.getId());
-                    return "redirect:/candidates/list?roundId=" + id;
-                } else {
-                    model.addAttribute("candidacyEnds", "You cannot candidate anymore! Elections are already started!");
-                    return "candidacy-error";
-                }
+            ElectionsRound currElectionsRound = electionsRoundService.getRoundById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid round ID: " + id));
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime startVoting = currElectionsRound.getStartElectionProcess().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            if (now.isBefore(startVoting)) {
+                Candidate candidate = new Candidate();
+                candidatesService.saveCandidate(candidate, currElectionsRound.getId());
+                return "redirect:/candidates/list?roundId=" + id;
             } else {
-                throw new IllegalArgumentException("Invalid round ID: " + id);
+                model.addAttribute("candidacyEnds", "You cannot candidate anymore! Elections are already started!");
+                return "candidacy-error";
             }
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -80,6 +78,11 @@ public class CandidateController {
                 .toLocalDateTime();
         model.addAttribute("endVoting", endVoting);
         List<Candidate> candidates = candidatesService.findAllCandidates(roundId);
+        List<UserEntity> users = candidates.stream()
+            .map(candidate -> userRepository.findById(candidate.getUserId())
+                    .orElseThrow(() -> new IllegalStateException("User not found with ID: " + candidate.getUserId())))
+            .collect(Collectors.toList());
+        model.addAttribute("users", users);
         model.addAttribute("candidates", candidates);
         model.addAttribute("electionRound", dbRound);
         return "candidates";

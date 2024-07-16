@@ -2,7 +2,6 @@ package com.PE.PresidentialElections.service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +33,21 @@ public class CandidatesServiceImp implements CandidatesService {
 
     @Override
     public void saveCandidate(Candidate candidate, Integer roundId) {
-        Optional<ElectionsRound> currentRoundOptional = electionsRoundService.getRoundById(roundId);
-        if (currentRoundOptional.isPresent()) {
-            ElectionsRound currentRound = currentRoundOptional.get();
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String candidateUsername = authentication.getName();
-            UserEntity user = userRepository.findByUsername(candidateUsername);
-            if (user.getCandidate() != null && user.getCandidate().getElectionsRound().equals(currentRound)) {
-                throw new IllegalStateException("You already applied as a candidate in the current election round!");
-            }
-            candidate.setUser(user);
-            candidate.setElectionsRound(currentRound);
-            currentRound.getCandidates().add(candidate);
-            candidatesRepository.save(candidate);
-            electionRoundRepository.save(currentRound);
-        } else {
-            throw new IllegalArgumentException("Invalid round ID: " + roundId);
+        ElectionsRound currentRound = electionsRoundService.getRoundById(roundId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid round ID" + roundId));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentCandidate = authentication.getName();
+        UserEntity user = userRepository.findByUsername(currentCandidate);
+        boolean candidateExists = currentRound.getCandidates().stream()
+            .anyMatch(cand -> cand.getUserId().equals(user.getId()));
+        if (candidateExists) {
+            throw new IllegalStateException("You already applied candidacy in this election round!");
         }
+        candidate.setUserId(user.getId());
+        candidate.setElectionsRound(currentRound);
+        currentRound.getCandidates().add(candidate);
+        candidatesRepository.save(candidate);
+        electionRoundRepository.save(currentRound);
     }
 
     @Override

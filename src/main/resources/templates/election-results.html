@@ -24,7 +24,7 @@
 </nav>
 <div class="container mt-5">
     <div class="row justify-content-start">
-        <div class="col-md-4" th:each="round : ${electionRounds}">
+        <div class="col-md-2" th:each="round : ${electionRounds}">
             <div class="card text-white bg-secondary mb-3" id="candidatesCard">
                 <div class="card-header">RESULTS FOR ROUND <span th:text="${round.id}"></span></div>
                 <h6 class="card-title" id="countDown">
@@ -45,8 +45,8 @@
                             </thead>
                             <tbody>
                                 <tr th:each="candidate : ${round.candidates}">
-                                    <td th:text="${candidate.user.firstName}"></td>
-                                    <td th:text="${candidate.user.lastName}"></td>
+                                    <td th:text="${@userRepository.findById(candidate.userId).orElse(null)?.firstName}"></td>
+                                    <td th:text="${@userRepository.findById(candidate.userId).orElse(null)?.lastName}"></td>
                                     <td th:text="${candidate.votes}"></td>
                                 </tr>
                             </tbody>

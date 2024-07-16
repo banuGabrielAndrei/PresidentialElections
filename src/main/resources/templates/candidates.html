@@ -44,9 +44,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="candidate : ${candidates}">
-                                <td th:text="${candidate.user.firstName}"></td>
-                                <td th:text="${candidate.user.lastName}"></td>
+                            <tr th:each="candidate, pos : ${candidates}">
+                                <td th:text="${users[pos.index].firstName}"></td>
+                                <td th:text="${users[pos.index].lastName}"></td>
                                 <td>
                                     <form th:action="@{/candidate/vote}" method="post">
                                         <input type="hidden" name="candidateId" th:value="${candidate.id}">
