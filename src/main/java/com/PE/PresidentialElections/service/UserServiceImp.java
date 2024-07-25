@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.PE.PresidentialElections.models.ElectionsRound;
 import com.PE.PresidentialElections.models.UserEntity;
 import com.PE.PresidentialElections.repository.UserRepository;
 
@@ -16,6 +17,9 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    VotesService votesService;
 
     @Override
     public void saveUser(UserEntity user) {
@@ -54,7 +58,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void voteCandidate(UserEntity user) {
-        
+    public void voteCandidate(UserEntity user, ElectionsRound electionRound) {
+        boolean hasVoted = user.getVotes().stream()
+                .anyMatch(vote -> vote.getElectionRound().equals(electionRound));
+        if (hasVoted) {
+            throw new IllegalStateException("You have already voted in " +
+             "this election round."); 
+        }
     }
 }

@@ -23,7 +23,8 @@ public class DbUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
         if (user != null) {
-            return new org.springframework.security.core.userdetails.User(user.getUsername(),
+            return new org.springframework.security.core.userdetails.
+            User(user.getUsername(),
                     user.getPassword(),
                     Collections.singleton(new SimpleGrantedAuthority(user.getRole())));
         } else {

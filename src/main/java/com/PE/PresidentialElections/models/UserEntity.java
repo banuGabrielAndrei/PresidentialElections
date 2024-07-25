@@ -1,5 +1,8 @@
 package com.PE.PresidentialElections.models;
 
+import java.util.List;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,4 +45,7 @@ public class UserEntity {
 
         @Column
         private String description;
+
+        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+        private List<Vote> votes;
 }

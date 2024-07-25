@@ -18,6 +18,9 @@
             <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item">
                 <a class="nav-link" th:href="@{/rounds/set-dates}">📅Set Dates</a>
             </li>
+            <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item">
+                <a class="nav-link" th:href="@{/elections-history}">📚Election History</a>
+            </li>
             <li class="nav-item"><a class="nav-link" th:href="@{/user/{username}/profile(username=${#authentication.principal.username})}">Profile</a></li>
             <li class="nav-item"><span class="nav-link" th:text="'Hello, ' + ${#authentication.principal.username}"></span></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/}">Logout</a></li>
@@ -39,8 +42,6 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="col-md-3 offset-md-9">
         <div class="card text-info bg-secondary mb-3 h-150" id="ranking">
             <img th:src="@{/images/podium.png}" class="card-img-top" alt="">
             <div class="card-body d-flex flex-column">

@@ -20,3 +20,26 @@ h4 {
   font: bolder;
   text-align: center;
 }
+
+.txt {
+  color: aliceblue;
+  font-style: inherit;
+  font-family: "Times New Roman", Times, serif;
+  font-size: medium;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: 20px;
+}
+
+.btn-group {
+  margin-bottom: 20px;
+}
+
+.btn-bot {
+  width: 100%; 
+  max-width: 200px; 
+}

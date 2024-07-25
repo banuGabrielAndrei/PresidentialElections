@@ -48,7 +48,7 @@
                                 <td th:text="${users[pos.index].firstName}"></td>
                                 <td th:text="${users[pos.index].lastName}"></td>
                                 <td>
-                                    <form th:action="@{/candidate/vote}" method="post">
+                                    <form th:action="@{/vote}" method="post">
                                         <input type="hidden" name="candidateId" th:value="${candidate.id}">
                                         <input type="hidden" name="roundId" th:value="${candidate.electionsRound.id}">
                                         <button type="submit" class="btn btn-primary btn-sm voteButton">Vote</button>

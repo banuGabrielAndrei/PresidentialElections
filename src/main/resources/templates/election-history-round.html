@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Presidential Elections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+</head>
+<body th:style="'background: url(/images/background-voting.jpg); background-size: cover;'">
+    <nav class="navbar navbar-expand-md bg-dark sticky-top border-bottom" data-bs-theme="dark">
+        <div class="container">
+            <div class="text-center d-md-block" id="title">Presidential Elections</div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
+                aria-controls="offcanvas" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <ul class="navbar-nav flex-grow-1 justify-content-end">
+                <li class="nav-item"><a class="nav-link" th:href="@{/presidential-elections}">@PE</a></li>
+                <li class="nav-item"><a class="nav-link"
+                        th:href="@{/user/{username}/profile(username=${#authentication.principal.username})}">Profile</a>
+                </li>
+                <li class="nav-item"><span class="nav-link"
+                        th:text="'Hello, ' + ${#authentication.principal.username}"></span></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h1 class="txt" th:text="${electionRound.title}">Election Round Name</h1>
+        <p class="txt"><strong>Start Date:</strong> <span
+                th:text="${#dates.format(electionRound.startElectionProcess, 'dd-MM-yyyy')}"></span></p>
+        <p class="txt"><strong>End Date:</strong> <span
+                th:text="${#dates.format(electionRound.endElectionProcess, 'dd-MM-yyyy')}"></span></p>
+    </div>
+    <div class="container">
+        <div class="btn-group">
+            <a class="nav-link" th:href="@{/elections-history}">
+                <button type="button" class="btn btn-secondary btn-sm">Back To History</button>
+            </a>
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Candidates
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li th:each="candidate, pos : ${candidates}">
+                    <a class="dropdown-item" href="#">
+                        <span th:text="${users[pos.index].firstName}">FirstName</span>
+                        <span th:text="${users[pos.index].lastName}">LastName</span> -
+                        <span th:text="${candidate.votes}">0</span> votes
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" type="button">
+                Voters
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li th:each="vote : ${votes}">
+                    <a class="dropdown-item" href="#">
+                        <span th:text="${vote.user.firstName}">First Name</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+    </script>
+</body>
+</html>

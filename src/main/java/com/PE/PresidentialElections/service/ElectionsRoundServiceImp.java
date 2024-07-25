@@ -42,9 +42,11 @@ public class ElectionsRoundServiceImp implements ElectionsRoundService {
 
     @Override
     public boolean isValidVotingDate(ElectionsRound electionsRound) {
-        LocalDateTime deadlineDateTime = electionsRound.getStartElectionProcess().toInstant().atZone(ZoneId.systemDefault())
+        LocalDateTime deadlineDateTime = electionsRound.getStartElectionProcess()
+                .toInstant().atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
-        LocalDateTime votingDateTime = electionsRound.getEndElectionProcess().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime votingDateTime = electionsRound.getEndElectionProcess()
+                .toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         Duration duration = Duration.between(deadlineDateTime, votingDateTime);
         return duration.toMinutes() >= 10;
     }

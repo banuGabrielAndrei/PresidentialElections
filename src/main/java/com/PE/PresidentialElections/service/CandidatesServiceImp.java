@@ -34,14 +34,17 @@ public class CandidatesServiceImp implements CandidatesService {
     @Override
     public void saveCandidate(Candidate candidate, Integer roundId) {
         ElectionsRound currentRound = electionsRoundService.getRoundById(roundId)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid round ID" + roundId));
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            .orElseThrow(() -> 
+            new IllegalArgumentException("Invalid round ID" + roundId));
+        Authentication authentication = SecurityContextHolder.getContext()
+            .getAuthentication();
         String currentCandidate = authentication.getName();
         UserEntity user = userRepository.findByUsername(currentCandidate);
         boolean candidateExists = currentRound.getCandidates().stream()
             .anyMatch(cand -> cand.getUserId().equals(user.getId()));
         if (candidateExists) {
-            throw new IllegalStateException("You already applied candidacy in this election round!");
+            throw new IllegalStateException("You already applied candidacy " +
+            "in this election round!");
         }
         candidate.setUserId(user.getId());
         candidate.setElectionsRound(currentRound);
@@ -53,7 +56,8 @@ public class CandidatesServiceImp implements CandidatesService {
     @Override
     public List<Candidate> findAllCandidates(Integer id) {
         ElectionsRound currentRound = electionsRoundService.getRoundById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid round ID: " + id));
+                .orElseThrow(() ->
+                 new IllegalArgumentException("Invalid round ID: " + id));
         List<Candidate> candidates = currentRound.getCandidates();
         return candidates.stream()
                 .sorted(Comparator.comparing(Candidate::getId))

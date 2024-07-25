@@ -42,4 +42,7 @@ public class ElectionsRound {
 
     @OneToMany(mappedBy = "electionsRound", cascade = CascadeType.ALL)
     private List<Candidate> candidates;
+
+    @OneToMany(mappedBy = "electionRound", cascade = CascadeType.ALL)
+    private List<Vote> votes;
 }
