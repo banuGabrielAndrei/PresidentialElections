@@ -32,6 +32,6 @@ public class Vote {
     @JoinColumn(name = "election_round_id", nullable = false)
     private ElectionsRound electionRound;
 
-    @Column(name = "votedCandidateId")
+    @Column(name = "voted_candidate_id")
     private Integer votedCandidateID;
 }
